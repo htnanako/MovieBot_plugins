@@ -37,6 +37,8 @@
       "defaultValue": true
     }
   ],
+  "githubUrl": "",
+  "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/aliyunpan_signin",
   "logoUrl": "/plugins/aliyunpan_signin/logo.jpg",
   "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg"
 }
