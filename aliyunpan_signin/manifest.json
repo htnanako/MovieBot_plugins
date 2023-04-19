@@ -1,0 +1,42 @@
+{
+  "name": "aliyunpan_signin",
+  "title": "阿里云盘签到",
+  "author": "NaNaKo_",
+  "description": "阿里云盘签到。",
+  "version": "0.1",
+  "requirements": [],
+  "configField": [
+    {
+      "fieldName": "uid",
+      "fieldType": "Enum",
+      "label": "推送用户",
+      "helperText": "选择接收推送的用户,用户管理要独立设置推送配置才生效",
+      "enumValuesRef": "UserList",
+      "multiValue": true
+    },
+    {
+      "fieldName": "ToChannelName",
+      "fieldType": "Enum",
+      "label": "推送通道名称",
+      "helperText": "选择想要推送的通道,逗号间隔",
+      "enumValuesRef": "ChannelNameList",
+      "multiValue": true
+    },
+    {
+      "fieldName": "refreshToken",
+      "fieldType": "String",
+      "label": "阿里云refreshToken",
+      "helperText": "阿里云盘的refreshToken，多个请用英文逗号隔开。",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "task_enable",
+      "fieldType": "Bool",
+      "label": "任务使能",
+      "helperText": "",
+      "defaultValue": true
+    }
+  ],
+  "logoUrl": "/plugins/aliyunpan_signin/logo.jpg",
+  "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg"
+}
