@@ -23,7 +23,7 @@ def after_setup(plugin_meta: PluginMeta, config: Dict[str, Any]):
         logging.error(f'[aliyunpan_signin]:请检查refreshToken是否正确填写。')
         return
     refreshToken_str = set_token_secret()
-    logging.info(f'阿里云盘签到正常启动，refreshToken:{refreshToken_str}')
+    logging.info(f'[aliyunpan_signin]:阿里云盘签到正常启动，refreshToken:{refreshToken_str}')
 
 
 @plugin.config_changed
@@ -35,8 +35,9 @@ def config_changed(config: Dict[str, Any]):
     task_enable = config.get('task_enable')
     if task_enable and not refreshToken:
         logging.error(f'[aliyunpan_signin]:请检查refreshToken是否正确填写。')
+        return
     refreshToken_str = set_token_secret()
-    logging.info(f'阿里云盘签到正常启动，refreshToken:{refreshToken_str}')
+    logging.info(f'[aliyunpan_signin]:阿里云盘签到配置修改，refreshToken:{refreshToken_str}')
 
 
 @plugin.task('aliyunpan_signin_task', '阿里云盘签到', cron_expression='10 0 * * *')
@@ -92,10 +93,14 @@ def signin(queryBody, access_token, remarks):
                 sendMessage.append(
                     '本次签到获得' + (currentSignInfo['reward']['name'] if 'name' in currentSignInfo['reward'] else '') + (
                         currentSignInfo['reward']['description'] if 'description' in currentSignInfo['reward'] else ''))
-            return ','.join(sendMessage)
+            sendMessage_str = ','.join(sendMessage)
+            logging.info(f'[aliyunpan_signin]:{sendMessage_str}')
+            return sendMessage_str
         except Exception as e:
             sendMessage.append('但是解析签到信息失败，请去阿里云盘APP查看。')
-            raise Exception(','.join(sendMessage))
+            sendMessage_str = ','.join(sendMessage)
+            logging.info(f'[aliyunpan_signin]:{sendMessage_str}')
+            raise Exception(sendMessage_str)
 
 
 # 获取refreshToken
