@@ -5,7 +5,6 @@ from typing import Dict, Any
 from mbot.openapi import mbot_api
 import re
 import logging
-import random
 
 import json
 import requests
@@ -84,15 +83,19 @@ def signin(queryBody, access_token, remarks):
         sendMessage.append('签到失败')
         raise Exception(','.join(sendMessage))
     else:
-        sendMessage.append('签到成功')
-        currentSignInfo = jsonData['result']['signInLogs'][jsonData['result']['signInCount'] - 1]
-        sendMessage.append('本月累计签到 ' + str(jsonData['result']['signInCount']) + ' 天')
-        if currentSignInfo['reward'] and (
-                'name' in currentSignInfo['reward'] or 'description' in currentSignInfo['reward']):
-            sendMessage.append(
-                '本次签到获得' + (currentSignInfo['reward']['name'] if 'name' in currentSignInfo['reward'] else '') + (
-                    currentSignInfo['reward']['description'] if 'description' in currentSignInfo['reward'] else ''))
-        return ','.join(sendMessage)
+        try:
+            sendMessage.append('签到成功')
+            currentSignInfo = jsonData['result']['signInLogs'][jsonData['result']['signInCount'] - 1]
+            sendMessage.append('本月累计签到 ' + str(jsonData['result']['signInCount']) + ' 天')
+            if currentSignInfo['reward'] and (
+                    'name' in currentSignInfo['reward'] or 'description' in currentSignInfo['reward']):
+                sendMessage.append(
+                    '本次签到获得' + (currentSignInfo['reward']['name'] if 'name' in currentSignInfo['reward'] else '') + (
+                        currentSignInfo['reward']['description'] if 'description' in currentSignInfo['reward'] else ''))
+            return ','.join(sendMessage)
+        except Exception as e:
+            sendMessage.append('但是解析签到信息失败，请去阿里云盘APP查看。')
+            raise Exception(','.join(sendMessage))
 
 
 # 获取refreshToken
@@ -147,7 +150,7 @@ def set_token_secret():
 
 def send_notify(title, content):
     channel_item = ToChannelName
-    pic = f'https://img.nanako.vip/?type=%E5%8E%9F%E7%A5%9E%E6%A8%AA%E7%89%88{random.randint(1,1000)}'
+    pic = 'https://s2.loli.net/2023/04/20/ySNZLnI3pQ6RvYb.jpg'
     if uid:
         for _ in uid:
             server.notify.send_message_by_tmpl('{{title}}', '{{a}}', {
