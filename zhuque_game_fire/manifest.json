@@ -1,0 +1,49 @@
+{
+  "name": "zhuque_game_fire",
+  "title": "朱雀站点释放技能",
+  "author": "NaNaKo_",
+  "description": "朱雀站点批量释放角色技能",
+  "version": "0.3",
+  "requirements": [],
+  "configField": [
+    {
+      "fieldName": "uid",
+      "fieldType": "Enum",
+      "label": "推送用户",
+      "helperText": "选择接收推送的用户,用户管理要独立设置推送配置才生效",
+      "enumValuesRef": "UserList",
+      "multiValue": true
+    },
+    {
+      "fieldName": "ToChannelName",
+      "fieldType": "Enum",
+      "label": "推送通道名称",
+      "helperText": "选择想要推送的通道",
+      "enumValuesRef": "ChannelNameList",
+      "multiValue": true
+    },
+    {
+      "fieldName": "task_switch",
+      "fieldType": "Bool",
+      "label": "任务开关",
+      "helperText": "自动任务开关",
+      "defaultValue": true
+    },
+    {
+      "fieldName": "cookie",
+      "fieldType": "String",
+      "label": "朱雀站点cookie",
+      "helperText": "朱雀站点cookie",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "x_csrf_token",
+      "fieldType": "String",
+      "label": "朱雀站点x-csrf-token",
+      "helperText": "朱雀站点x-csrf-token",
+      "defaultValue": ""
+    }
+  ],
+  "logoUrl": "/plugins/zhuque_game_fire/logo.jpg",
+  "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg"
+}
