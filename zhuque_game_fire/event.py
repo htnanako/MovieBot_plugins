@@ -31,7 +31,7 @@ def start_main():
         now_time = parse(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
         if now_time >= times:
             fire()
-            start_main()
+            return
         else:
             delta = times - now_time
             delta_second = delta.total_seconds()
@@ -65,7 +65,8 @@ def after_setup(plugin_meta: PluginMeta, config: Dict[str, Any]):
     cookie = config.get('cookie')
     x_csrf_token = config.get('x_csrf_token')
     _LOGGER.info(f'[zhuque_game_file]:ZHUQUE释放技能插件初始化完成。')
-    start_main()
+    if task_switch:
+        start_main()
 
 
 @plugin.config_changed

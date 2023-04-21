@@ -3,7 +3,7 @@
   "title": "朱雀站点释放技能",
   "author": "NaNaKo_",
   "description": "朱雀站点批量释放角色技能",
-  "version": "0.4",
+  "version": "0.5",
   "requirements": [],
   "configField": [
     {
@@ -26,7 +26,7 @@
       "fieldName": "task_switch",
       "fieldType": "Bool",
       "label": "任务开关",
-      "helperText": "自动任务开关",
+      "helperText": "自动任务开关。若切换此开关请重启程序。",
       "defaultValue": true
     },
     {
