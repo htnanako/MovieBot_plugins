@@ -33,11 +33,13 @@ def start_main():
             if fire():
                 return
             else:
-                time.sleep(random.randint(10, 15) * 60)
+                time.sleep(random.randint(5, 10) * 60)
                 start_main()
         else:
             delta = times - now_time
             delta_second = delta.total_seconds()
+            if delta_second > 86400:
+                return
             remain_time = parse_seconds(delta_second)
             logging.info(f'[zhuque_game_file]:开始睡觉，{remain_time}后起来干活。')
             time.sleep(int(delta_second) + random.randint(300, 600))
@@ -134,7 +136,7 @@ def latest_time(times_list):
     if past_list:
         return max(past_list)
     else:
-        tomorrow = today + datetime.timedelta(days=1)
+        tomorrow = today + datetime.timedelta(days=2)
         return datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
 
 
