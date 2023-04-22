@@ -3,7 +3,7 @@
   "title": "朱雀站点释放技能",
   "author": "NaNaKo_",
   "description": "朱雀站点批量释放角色技能",
-  "version": "0.5",
+  "version": "0.6",
   "requirements": [],
   "configField": [
     {

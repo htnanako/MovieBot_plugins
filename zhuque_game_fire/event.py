@@ -30,30 +30,21 @@ def start_main():
     try:
         now_time = parse(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
         if now_time >= times:
-            fire()
-            return
+            if fire():
+                return
+            else:
+                time.sleep(random.randint(10, 15) * 60)
+                start_main()
         else:
             delta = times - now_time
             delta_second = delta.total_seconds()
-            if delta_second >= 3600:
-                hours = delta_second // 3600
-                remaining_seconds = delta_second % 3600
-                minutes = remaining_seconds // 60
-                seconds = remaining_seconds % 60
-                remain_time = f'{int(hours):02d}小时{int(minutes):02d}分钟{int(seconds):02d}秒'
-            elif delta_second >= 60:
-                minutes = delta_second // 60
-                seconds = delta_second % 60
-                remain_time = f'{int(minutes):02d}分钟{int(seconds):02d}秒'
-            else:
-                remain_time = f'{int(delta_second):02d}秒'
+            remain_time = parse_seconds(delta_second)
             logging.info(f'[zhuque_game_file]:开始睡觉，{remain_time}后起来干活。')
-            time.sleep(int(delta_second) + random.randint(60, 120))
+            time.sleep(int(delta_second) + random.randint(300, 600))
             start_main()
     except Exception as e:
         logging.error(f'[zhuque_game_file]:释放技能出错了,错误信息：{e}', exc_info=True)
         return
-
 
 
 @plugin.after_setup
@@ -96,7 +87,10 @@ def zhuque_fire_echo(ctx: PluginCommandContext):
             fire()
             return PluginCommandResponse(True, f'释放技能成功')
         else:
-            _LOGGER.info(f'[zhuque_game_file]:时间未到。')
+            delta = times - now_time
+            delta_second = delta.total_seconds()
+            remain_time = parse_seconds(delta_second)
+            _LOGGER.info(f'[zhuque_game_file]:时间未到。还需要{remain_time}')
             return PluginCommandContext(True, f'时间未到。')
     except Exception as e:
         logging.error(f'[zhuque_game_file]:释放技能出错了,错误信息：{e}', exc_info=True)
@@ -119,6 +113,8 @@ def zhuque_character():
                 next_time = int(i['info']['next_time'])
                 next_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(next_time))
                 h = f'角色：{name}(Lv.{level})\n时间：{next_time}'
+                if '行秋' in name or '班尼特' in name:
+                    continue
                 times = parse(next_time)
                 times_list.append(times)
                 has_character.append(h)
@@ -138,7 +134,24 @@ def latest_time(times_list):
     if past_list:
         return max(past_list)
     else:
-        return datetime.datetime(9999, 12, 31, 23, 59, 59)
+        tomorrow = today + datetime.timedelta(days=1)
+        return datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0)
+
+
+def parse_seconds(delta_second):
+    if delta_second >= 3600:
+        hours = delta_second // 3600
+        remaining_seconds = delta_second % 3600
+        minutes = remaining_seconds // 60
+        seconds = remaining_seconds % 60
+        remain_time = f'{int(hours):02d}小时{int(minutes):02d}分钟{int(seconds):02d}秒'
+    elif delta_second >= 60:
+        minutes = delta_second // 60
+        seconds = delta_second % 60
+        remain_time = f'{int(minutes):02d}分钟{int(seconds):02d}秒'
+    else:
+        remain_time = f'{int(delta_second):02d}秒'
+    return remain_time
 
 
 def fire():
