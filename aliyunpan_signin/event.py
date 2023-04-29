@@ -14,11 +14,12 @@ server = mbot_api
 
 @plugin.after_setup
 def after_setup(plugin_meta: PluginMeta, config: Dict[str, Any]):
-    global uid, ToChannelName, refreshToken, task_enable
+    global uid, ToChannelName, refreshToken, task_enable, reward_enable
     uid = config.get('uid')
     ToChannelName = config.get('ToChannelName')
     refreshToken = config.get('refreshToken')
     task_enable = config.get('task_enable')
+    reward_enable = config.get('reward_enable')
     if task_enable and not refreshToken:
         logging.error(f'[aliyunpan_signin]:请检查refreshToken是否正确填写。')
         return
@@ -28,11 +29,12 @@ def after_setup(plugin_meta: PluginMeta, config: Dict[str, Any]):
 
 @plugin.config_changed
 def config_changed(config: Dict[str, Any]):
-    global uid, ToChannelName, refreshToken, task_enable
+    global uid, ToChannelName, refreshToken, task_enable, reward_enable
     uid = config.get('uid')
     ToChannelName = config.get('ToChannelName')
     refreshToken = config.get('refreshToken')
     task_enable = config.get('task_enable')
+    reward_enable = config.get('reward_enable')
     if task_enable and not refreshToken:
         logging.error(f'[aliyunpan_signin]:请检查refreshToken是否正确填写。')
         return
@@ -40,7 +42,7 @@ def config_changed(config: Dict[str, Any]):
     logging.info(f'[aliyunpan_signin]:阿里云盘签到配置修改，refreshToken:{refreshToken_str}')
 
 
-@plugin.task('aliyunpan_signin_task', '阿里云盘签到', cron_expression='10 0 * * *')
+@plugin.task('aliyunpan_signin_task', '阿里云盘签到', cron_expression='10 * * * *')
 def aliyunpan_signin_task():
     if task_enable:
         main()
@@ -86,13 +88,10 @@ def signin(queryBody, access_token, remarks):
     else:
         try:
             sendMessage.append('签到成功')
-            currentSignInfo = jsonData['result']['signInLogs'][jsonData['result']['signInCount'] - 1]
             sendMessage.append('本月累计签到 ' + str(jsonData['result']['signInCount']) + ' 天')
-            if currentSignInfo['reward'] and (
-                    'name' in currentSignInfo['reward'] or 'description' in currentSignInfo['reward']):
-                sendMessage.append(
-                    '本次签到获得' + (currentSignInfo['reward']['name'] if 'name' in currentSignInfo['reward'] else '') + (
-                        currentSignInfo['reward']['description'] if 'description' in currentSignInfo['reward'] else ''))
+            if reward_enable:
+                rewardInfo = getReward(access_token, jsonData['result']['signInCount'])
+                sendMessage.append(f'本次签到获得{rewardInfo.get("name", "")}{rewardInfo.get("description", "")}')
             sendMessage_str = ','.join(sendMessage)
             logging.info(f'[aliyunpan_signin]:{sendMessage_str}')
             return sendMessage_str
@@ -101,6 +100,21 @@ def signin(queryBody, access_token, remarks):
             sendMessage_str = ','.join(sendMessage)
             logging.info(f'[aliyunpan_signin]:{sendMessage_str}')
             raise Exception(sendMessage_str)
+
+
+# 领取奖励
+def getReward(access_token, signInDay):
+    rewardURL = "https://member.aliyundrive.com/v1/activity/sign_in_reward?_rx-s=mobile"
+    headers = {
+        "authorization": access_token,
+        "Content-Type": "application/json"
+    }
+    data = {"signInDay": signInDay}
+    response = requests.post(rewardURL, headers=headers, json=data)
+    json = response.json()
+    if not json["success"]:
+        raise Exception(json["message"])
+    return json["result"]
 
 
 # 获取refreshToken
