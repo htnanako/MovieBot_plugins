@@ -3,7 +3,7 @@
   "title": "阿里云盘签到",
   "author": "NaNaKo_",
   "description": "阿里云盘签到。",
-  "version": "0.1",
+  "version": "0.2",
   "requirements": [],
   "configField": [
     {
@@ -32,7 +32,14 @@
     {
       "fieldName": "task_enable",
       "fieldType": "Bool",
-      "label": "任务使能",
+      "label": "签到任务使能",
+      "helperText": "",
+      "defaultValue": true
+    },
+    {
+      "fieldName": "reward_enable",
+      "fieldType": "Bool",
+      "label": "签到后是否自动领奖",
       "helperText": "",
       "defaultValue": true
     }
