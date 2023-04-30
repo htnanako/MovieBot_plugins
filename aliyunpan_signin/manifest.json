@@ -3,7 +3,7 @@
   "title": "阿里云盘签到",
   "author": "NaNaKo_",
   "description": "阿里云盘签到。",
-  "version": "0.2",
+  "version": "0.3",
   "requirements": [],
   "configField": [
     {

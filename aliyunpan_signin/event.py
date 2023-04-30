@@ -3,6 +3,8 @@ from mbot.core.plugins import PluginContext, PluginMeta
 from mbot.core.plugins import plugin, PluginCommandContext, PluginCommandResponse
 from typing import Dict, Any
 from mbot.openapi import mbot_api
+import datetime
+import calendar
 import re
 import logging
 
@@ -42,7 +44,7 @@ def config_changed(config: Dict[str, Any]):
     logging.info(f'[aliyunpan_signin]:阿里云盘签到配置修改，refreshToken:{refreshToken_str}')
 
 
-@plugin.task('aliyunpan_signin_task', '阿里云盘签到', cron_expression='10 * * * *')
+@plugin.task('aliyunpan_signin_task', '阿里云盘签到', cron_expression='10 0 * * *')
 def aliyunpan_signin_task():
     if task_enable:
         main()
@@ -154,6 +156,8 @@ def main():
         index += 1
 
     message_last = '\n'.join(messageList)
+    if not reward_enable and the_last_day():
+        message_last += f'\n今天是月末了，记得去领奖励。'
     send_notify('阿里云盘签到', message_last)
 
 
@@ -177,3 +181,12 @@ def send_notify(title, content):
                 'a': content,
                 'pic_url': pic
             }, to_uid=_, to_channel_name=channel_item)
+
+
+def the_last_day():
+    today = datetime.date.today()
+    last_day = calendar.monthrange(today.year, today.month)[1]
+    if today.day == last_day:
+        return True
+    else:
+        return False
