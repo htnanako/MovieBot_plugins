@@ -1,0 +1,58 @@
+{
+  "name": "Aliyun-ddns",
+  "title": "Aliyun-ddns",
+  "author": "NaNaKo_",
+  "description": "aliyun-ddns",
+  "version": "0.1",
+  "requirements": [],
+  "configField": [
+    {
+      "fieldName": "uid",
+      "fieldType": "Enum",
+      "label": "推送用户",
+      "helperText": "选择接收推送的用户,用户管理要独立设置推送配置才生效",
+      "enumValuesRef": "UserList",
+      "multiValue": true
+    },
+    {
+      "fieldName": "ToChannelName",
+      "fieldType": "Enum",
+      "label": "推送通道名称",
+      "helperText": "选择想要推送的通道,逗号间隔",
+      "enumValuesRef": "ChannelNameList",
+      "multiValue": true
+    },
+    {
+      "fieldName": "access_key_id",
+      "fieldType": "String",
+      "label": "Aliyun的access_key_id",
+      "helperText": "Aliyun的access_key_id，查看https://usercenter.console.aliyun.com/",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "access_key_secret",
+      "fieldType": "String",
+      "label": "Aliyun的access_key_secret",
+      "helperText": "Aliyun的access_key_secret，查看https://usercenter.console.aliyun.com/",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "domain_name",
+      "fieldType": "String",
+      "label": "域名",
+      "helperText": "需要更新的域名",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "task_enable",
+      "fieldType": "Bool",
+      "label": "任务使能",
+      "helperText": "",
+      "defaultValue": true
+    }
+  ],
+  "githubUrl": "",
+  "helpDocUrl": "",
+  "logoUrl": "/plugins/aliyun-ddns/logo.png",
+  "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg"
+}
