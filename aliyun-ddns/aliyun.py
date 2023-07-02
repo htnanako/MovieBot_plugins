@@ -95,19 +95,25 @@ def check_now_ip():
         "ifconfig.io": "https://ifconfig.io/ip"
     }
     for k, v in ipv4_url.items():
-        r_v4 = httpx.get(v)
-        if r_v4.status_code != 200:
+        try:
+            r_v4 = httpx.get(v)
+            if r_v4.status_code != 200:
+                continue
+            r_v4 = r_v4.text.rstrip()
+            v4_api = k
+            break
+        except:
             continue
-        r_v4 = r_v4.text.rstrip()
-        v4_api = k
-        break
     for k, v in ipv6_url.items():
-        r_v6 = httpx.get(v)
-        if r_v6.status_code != 200:
+        try:
+            r_v6 = httpx.get(v)
+            if r_v6.status_code != 200:
+                continue
+            r_v6 = r_v6.text.rstrip()
+            v6_api = k
+            break
+        except:
             continue
-        r_v6 = r_v6.text.rstrip()
-        v6_api = k
-        break
     return {"ipv4": r_v4, "v4_api": v4_api, "ipv6": r_v6, "v6_api": v6_api}
 
 
