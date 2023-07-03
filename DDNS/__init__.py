@@ -1,2 +1,2 @@
 from .install_module import *
-from .aliyun import *
+from .main import *

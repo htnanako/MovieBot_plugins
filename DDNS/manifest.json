@@ -1,9 +1,9 @@
 {
-  "name": "Aliyun-ddns",
-  "title": "Aliyun-ddns",
+  "name": "DDNS",
+  "title": "DDNS",
   "author": "NaNaKo_",
-  "description": "aliyun-ddns",
-  "version": "0.1",
+  "description": "自动更新DDNS，支持Aliyun及DNSPod。",
+  "version": "0.2",
   "requirements": [],
   "configField": [
     {
@@ -23,17 +23,28 @@
       "multiValue": true
     },
     {
-      "fieldName": "access_key_id",
+      "fieldName": "CloudVendor",
+      "fieldType": "Enum",
+      "label": "云厂商",
+      "helperText": "选择云厂商",
+      "enumValues": {
+        "Aliyun": "Aliyun",
+        "DNSPod": "DNSPod"
+      },
+      "multiValue": false
+    },
+    {
+      "fieldName": "key_id",
       "fieldType": "String",
-      "label": "Aliyun的access_key_id",
-      "helperText": "Aliyun的access_key_id，查看https://usercenter.console.aliyun.com/",
+      "label": "Aliyun的AccessKeyID,或DNSPod的SecretId",
+      "helperText": "Aliyun查看https://usercenter.console.aliyun.com，DNSPod查看https://console.cloud.tencent.com/cam/capi",
       "defaultValue": ""
     },
     {
-      "fieldName": "access_key_secret",
+      "fieldName": "key_secret",
       "fieldType": "String",
-      "label": "Aliyun的access_key_secret",
-      "helperText": "Aliyun的access_key_secret，查看https://usercenter.console.aliyun.com/",
+      "label": "Aliyun的AccessKeySecret,或DNSPod的SecretKey",
+      "helperText": "Aliyun查看https://usercenter.console.aliyun.com，DNSPod查看https://console.cloud.tencent.com/cam/capi",
       "defaultValue": ""
     },
     {
@@ -52,7 +63,7 @@
         "A": "A",
         "AAAA": "AAAA"
       },
-      "defaultValue": ""
+      "multiValue": true
     },
     {
       "fieldName": "task_enable",
@@ -64,6 +75,6 @@
   ],
   "githubUrl": "",
   "helpDocUrl": "",
-  "logoUrl": "/plugins/aliyun-ddns/logo.jpg",
+  "logoUrl": "/plugins/DDNS/logo.jpg",
   "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg"
 }
