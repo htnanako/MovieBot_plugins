@@ -44,6 +44,17 @@
       "defaultValue": ""
     },
     {
+      "fieldName": "record_type",
+      "fieldType": "Enum",
+      "label": "记录类型",
+      "helperText": "需要解析的记录类型",
+      "enumValues": {
+        "A": "A",
+        "AAAA": "AAAA"
+      },
+      "defaultValue": ""
+    },
+    {
       "fieldName": "task_enable",
       "fieldType": "Bool",
       "label": "任务使能",
@@ -53,6 +64,6 @@
   ],
   "githubUrl": "",
   "helpDocUrl": "",
-  "logoUrl": "/plugins/aliyun-ddns/logo.png",
+  "logoUrl": "/plugins/aliyun-ddns/logo.jpg",
   "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg"
 }

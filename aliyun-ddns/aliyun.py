@@ -16,12 +16,13 @@ _LOGGER = logging.getLogger(__name__)
 
 
 def main_config(config: Dict[str, Any]):
-    global uid, ToChannelName, access_key_id, access_key_secret, domain_name, task_enable
+    global uid, ToChannelName, access_key_id, access_key_secret, domain_name, record_type, task_enable
     uid = config.get('uid')
     ToChannelName = config.get('ToChannelName')
     access_key_id = config.get('access_key_id')
     access_key_secret = config.get('access_key_secret')
     domain_name = config.get('domain_name')
+    record_type = config.get('record_type')
     task_enable = config.get('task_enable')
 
 
@@ -36,14 +37,14 @@ def config_changed(config: Dict[str, Any]):
 
 
 @plugin.task('Aliyun-ddns', 'Aliyun-ddns', cron_expression='* * * * *')
-def aiproxy_overview_task():
+def aliyun_ddns_task():
     if task_enable:
         main()
 
 
 @plugin.command(name='Aliyun-ddns', title='Aliyun-ddns', desc='点击立即更新Aliyun-ddns', icon='AutoAwesome',
                 run_in_background=True)
-def aiproxy_overview_command(ctx: PluginCommandContext):
+def aliyun_ddns_command(ctx: PluginCommandContext):
     main()
     return PluginCommandResponse(True, f'Aliyun-ddns更新成功！')
 
@@ -119,7 +120,7 @@ def check_now_ip():
 
 def send_notify(title, content):
     channel_item = ToChannelName
-    pic = ''
+    pic = 'https://s2.loli.net/2023/07/03/JOrRCw8hmEUb35s.jpg'
     if uid:
         for _ in uid:
             server.notify.send_message_by_tmpl('{{title}}', '{{a}}', {
@@ -132,8 +133,9 @@ def send_notify(title, content):
 def main():
     RecordList = json.loads(check_record())
     now_ip = check_now_ip()
+    update_result = []
     for item in RecordList:
-        if item['Type'] == 'A':
+        if item['Type'] == 'A' and 'A' in record_type:
             if item['Value'] != now_ip['ipv4']:
                 if update_record(record_id=item['RecordId'],
                                  rr=item['RR'],
@@ -141,11 +143,10 @@ def main():
                                  value=now_ip['ipv4']):
                     _LOGGER.info(f'当前IPv4地址为{now_ip["ipv4"]}(来源：{now_ip["v4_api"]})')
                     _LOGGER.info(f'域名{item["RR"]}.{item["DomainName"]}的{item["Type"]}记录已更新为{now_ip["ipv4"]}')
-                    send_notify(title=f'DDNS:IP变动',
-                                content=f'域名{item["RR"]}.{item["DomainName"]}的{item["Type"]}记录已更新为{now_ip["ipv4"]}', )
+                    update_result.append(f'域名{item["RR"]}.{item["DomainName"]}的{item["Type"]}记录已更新为{now_ip["ipv4"]}')
             # else:
             #     _LOGGER.info(f'IPv4地址未变化，无需更新')
-        elif item['Type'] == 'AAAA':
+        elif item['Type'] == 'AAAA' and 'AAAA' in record_type:
             if item['Value'] != now_ip['ipv6']:
                 if update_record(record_id=item['RecordId'],
                                  rr=item['RR'],
@@ -153,7 +154,9 @@ def main():
                                  value=now_ip['ipv6']):
                     _LOGGER.info(f'当前IPv6地址为{now_ip["ipv6"]}(来源：{now_ip["v6_api"]})')
                     _LOGGER.info(f'域名{item["RR"]}.{item["DomainName"]}的{item["Type"]}记录已更新为{now_ip["ipv6"]}')
-                    send_notify(title=f'DDNS:IP变动',
-                                content=f'域名{item["RR"]}.{item["DomainName"]}的{item["Type"]}记录已更新为{now_ip["ipv6"]}', )
+                    update_result.append(f'域名{item["RR"]}.{item["DomainName"]}的{item["Type"]}记录已更新为{now_ip["ipv6"]}')
             # else:
             #     _LOGGER.info(f'IPv6地址未变化，无需更新')
+    if len(update_result) > 0:
+        send_notify(title=f'🌐DDNS: IP变动',
+                    content='\n'.join(update_result), )
