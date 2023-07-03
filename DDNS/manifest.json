@@ -73,8 +73,8 @@
       "defaultValue": true
     }
   ],
-  "githubUrl": "",
-  "helpDocUrl": "",
+  "githubUrl": "https://github.com/htnanako/MovieBot_plugins",
+  "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/DDNS",
   "logoUrl": "/plugins/DDNS/logo.jpg",
   "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg"
 }
