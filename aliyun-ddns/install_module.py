@@ -25,10 +25,10 @@ def GetPackage(PackageName):
     try:
         install_log = os.popen(command)
         _LOGGER.info(f'「Aliyun-ddns - 安装依赖脚本」安装依赖日志如下:\n{install_log.read()}')
-        _LOGGER.warning(f'「Aliyun-ddns - 安装依赖脚本」如果下方报错：依赖库 alibabacloud_alidns20150109 安装失败导致插件载入失败，请手动进入 MR 命令行安装，安装命令：pip install '
-                        f'alibabacloud_alidns20150109==3.0.7')
+        _LOGGER.warning(f'「Aliyun-ddns - 安装依赖脚本」如果下方报错：依赖库 alibabacloud_alidns20150109 安装失败导致插件载入失败，请手动进入 mbot '
+                        f'命令行安装，安装命令：pip install alibabacloud_alidns20150109==3.0.7')
     except Exception as e:
-        _LOGGER.error(f"「每天60秒读懂世界 - 安装依赖脚本」安装依赖库失败！原因：{e}")
+        _LOGGER.error(f"「Aliyun-ddns - 安装依赖脚本」安装依赖库失败！原因：{e}")
 
 
 for v in import_list:
