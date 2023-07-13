@@ -7,12 +7,11 @@ from mbot.openapi import mbot_api
 from typing import Dict, Any
 
 
-from .Aliyun.aliyun_main import main as aliyun_main
-from .DNSPod.dnspod_main import main as dnspod_main
 
 server = mbot_api
 
 _LOGGER = logging.getLogger(__name__)
+from .install_module import ImportModule
 
 
 def main_config(config: Dict[str, Any]):
@@ -20,6 +19,11 @@ def main_config(config: Dict[str, Any]):
     uid = config.get('uid')
     ToChannelName = config.get('ToChannelName')
     CloudVendor = config.get('CloudVendor')
+    if CloudVendor == 'Aliyun':
+        importmodule = ImportModule(import_list=['alibabacloud_alidns20150109'])
+    elif CloudVendor == 'DNSPod':
+        importmodule = ImportModule(import_list=['tencentcloud-sdk-python'])
+    importmodule.start()
     key_id = config.get('key_id')
     key_secret = config.get('key_secret')
     domain_name = config.get('domain_name')
@@ -98,12 +102,14 @@ def send_notify(title, content):
 def main():
     now_ip = check_now_ip()
     if CloudVendor == 'Aliyun':
+        from .Aliyun.aliyun_main import main as aliyun_main
         update_result = aliyun_main(access_key_id=key_id,
                                     access_key_secret=key_secret,
                                     domain_name=domain_name,
                                     now_ip=now_ip,
                                     record_type=record_type)
     elif CloudVendor == 'DNSPod':
+        from .DNSPod.dnspod_main import main as dnspod_main
         update_result = dnspod_main(SecretId=key_id,
                                     SecretKey=key_secret,
                                     domain_name=domain_name,
