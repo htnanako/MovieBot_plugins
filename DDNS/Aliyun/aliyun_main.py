@@ -73,7 +73,9 @@ def main(access_key_id: str,
             #     _LOGGER.info(f'IPv4地址未变化，无需更新')
         elif item['Type'] == 'AAAA' and 'AAAA' in record_type:
             if item['Value'] != now_ip['ipv6']:
-                if update_record(record_id=item['RecordId'],
+                if update_record(access_key_id=access_key_id,
+                                 access_key_secret=access_key_secret,
+                                 record_id=item['RecordId'],
                                  rr=item['RR'],
                                  record_type=item['Type'],
                                  value=now_ip['ipv6']):
