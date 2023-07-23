@@ -16,4 +16,4 @@
 
 ---
 
-![GenshinImpact](https://img.nanako.vip?type=%E5%8E%9F%E7%A5%9E%E6%A8%AA%E7%89%88)
+![GenshinImpact](https://raw.githubusercontent.com/htnanako/htnanako/main/img/hutao.png)
