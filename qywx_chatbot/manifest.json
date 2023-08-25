@@ -1,0 +1,93 @@
+{
+  "name": "qywx_chatbot",
+  "title": "企业微信ChatBOT",
+  "author": "NaNaKo_",
+  "description": "通过企业微信与ChatGPT聊天",
+  "version": "0.1",
+  "requirements": [],
+  "configField": [
+    {
+      "fieldName": "SERVICE",
+      "fieldType": "Enum",
+      "label": "GPT接口",
+      "helperText": "选择GPT接口",
+      "enumValues": {
+        "OpenAI": "https://api.openai.com",
+        "AiProxy": "https://api.aiproxy.io"
+      },
+      "multiValue": false
+    },
+    {
+      "fieldName": "proxy",
+      "fieldType": "String",
+      "label": "代理设置",
+      "helperText": "留空则不使用代理。支持通过HTTP代理、SOCKS代理发送消息。示范：http://localhost:8030 或 socks5://user:pass@host:port",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "api_key",
+      "fieldType": "String",
+      "label": "API_KEY",
+      "helperText": "GPT接口提供商给的API_KEY",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "model",
+      "fieldType": "Enum",
+      "label": "模型",
+      "helperText": "选择对话模型",
+      "enumValues": {
+        "gpt-3.5-turbo": "gpt-3.5-turbo",
+        "gpt-3.5-turbo-16k": "gpt-3.5-turbo-16k",
+        "gpt-4": "gpt-4"
+      },
+      "multiValue": false
+    },
+    {
+      "fieldName": "qywx_base_url",
+      "fieldType": "String",
+      "label": "推送API地址",
+      "helperText": "官方：https://qyapi.weixin.qq.com 高级玩家可以自定义代理",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "sCorpID",
+      "fieldType": "String",
+      "label": "corpid",
+      "helperText": "企业微信CorpID",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "sCorpsecret",
+      "fieldType": "String",
+      "label": "corpsecret",
+      "helperText": "企业微信corpsecret",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "sAgentid",
+      "fieldType": "String",
+      "label": "agentid",
+      "helperText": "企业应用的id。企业内部开发，可在应用的设置页面查看",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "sToken",
+      "fieldType": "String",
+      "label": "token",
+      "helperText": "企业微信接收消息页随机获取的Token",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "sEncodingAESKey",
+      "fieldType": "String",
+      "label": "encodingAESKey",
+      "helperText": "企业微信接收消息页随机获取的EncodingAESKey",
+      "defaultValue": ""
+    }
+  ],
+  "githubUrl": "https://github.com/htnanako/MovieBot_plugins",
+  "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/qywx_chatbot",
+  "logoUrl": "/plugins/qywx_chatbot/logo.jpg",
+  "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg"
+}
