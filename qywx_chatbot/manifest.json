@@ -1,9 +1,9 @@
 {
   "name": "qywx_chatbot",
-  "title": "企业微信ChatBOT",
+  "title": "企业微信ChatBot",
   "author": "NaNaKo_",
   "description": "通过企业微信与ChatGPT聊天",
-  "version": "0.2",
+  "version": "0.3",
   "requirements": [],
   "configField": [
     {
@@ -38,8 +38,9 @@
       "helperText": "选择对话模型",
       "enumValues": {
         "gpt-3.5-turbo": "gpt-3.5-turbo",
-        "gpt-3.5-turbo-16k": "gpt-3.5-turbo-16k",
-        "gpt-4": "gpt-4"
+        "gpt-3.5-turbo-0613": "gpt-3.5-turbo-0613",
+        "gpt-4": "gpt-4",
+        "gpt-4-0613": "gpt-4-0613"
       },
       "multiValue": false
     },
@@ -48,7 +49,7 @@
       "fieldType": "String",
       "label": "推送API地址",
       "helperText": "官方：https://qyapi.weixin.qq.com 高级玩家可以自定义代理",
-      "defaultValue": ""
+      "defaultValue": "https://qyapi.weixin.qq.com"
     },
     {
       "fieldName": "sCorpID",

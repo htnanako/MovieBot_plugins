@@ -31,7 +31,8 @@ async def chat(base_url, proxy, api_key, model, query):
                                    "role": "user",
                                    "content": query
                                }
-                           ]
+                           ],
+                           "max_tokens": 2048,
                        },
                        proxies=proxy,
                        timeout=180)
