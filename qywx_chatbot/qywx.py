@@ -47,6 +47,12 @@ def main_config(config):
     sAgentid = config.get('sAgentid')
     sToken = config.get('sToken')
     sEncodingAESKey = config.get('sEncodingAESKey')
+    config_list = [base_url, api_key, model, qywx_base_url, sCorpID, sCorpsecret, sAgentid, sToken, sEncodingAESKey]
+    for config_item in config_list:
+        if not config_item:
+            logger.error(f"chatbot配置不完整，配置完成后重启。")
+            return
+    logger.info(f"chatbot配置完成。base_url:{base_url}, API_KEY:{api_key[:7]}*****{api_key[-6:]}, Model:{model}")
 
 
 @plugin.after_setup
@@ -142,14 +148,14 @@ def verify():
         wxcpt = WXBizMsgCrypt(sToken, sEncodingAESKey, sCorpID)
         ret, sEchoStr = wxcpt.VerifyURL(msg_signature, timestamp, nonce, echostr)
         if ret == 0:
-            # logger.info("verifyurl echostr: " + sEchoStr.decode('utf-8'))
+            logger.info("verifyurl echostr: " + sEchoStr.decode('utf-8'))
             return sEchoStr.decode('utf-8'), 200
         else:
             logger.error(f"ERR: VerifyURL ret: {str(sEchoStr)}")
             return '', 401
     except Exception as e:
         logger.error(f'回调接口出错了，{e}', exc_info=True)
-        return '', 200
+        return '', 500
 
 
 @bp.route("/chat", methods=['POST'])
