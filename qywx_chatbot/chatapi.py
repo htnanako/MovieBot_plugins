@@ -17,23 +17,41 @@ ERROR_CODE = {
 
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
-async def chat(base_url, proxy, api_key, model, query):
+async def chat(base_url, proxy, api_key, model, query, session_id=None, session_limit=None):
+    query = query.strip()
+    if "openai" in base_url:
+        params = {
+            "model": model,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": query
+                }
+            ],
+            "max_tokens": 2048,
+        }
+    else:
+        session_id = session_id
+        session_limit = session_limit if session_limit else 0
+        params = {
+            "model": model,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": query
+                }
+            ],
+            "session_id": session_id,
+            "session_limit": session_limit,
+            "max_tokens": 2048,
+        }
     try:
-        r = httpx.post(f'{base_url}/v1/chat/completions',
+        r = httpx.post(url=f"{base_url}/v1/chat/completions",
                        headers={
                            "Content-Type": "application/json",
                            "Authorization": f"Bearer {api_key}"
                        },
-                       json={
-                           "model": model,
-                           "messages": [
-                               {
-                                   "role": "user",
-                                   "content": query
-                               }
-                           ],
-                           "max_tokens": 2048,
-                       },
+                       json=params,
                        proxies=proxy,
                        timeout=180)
         j = r.json()

@@ -3,7 +3,7 @@
   "title": "企业微信ChatBot",
   "author": "NaNaKo_",
   "description": "通过企业微信与ChatGPT聊天",
-  "version": "0.4",
+  "version": "0.5",
   "requirements": [],
   "configField": [
     {
@@ -30,6 +30,13 @@
       "label": "API_KEY",
       "helperText": "GPT接口提供商给的API_KEY",
       "defaultValue": ""
+    },
+    {
+      "fieldName": "session_limit",
+      "fieldType": "String",
+      "label": "上下文数量",
+      "helperText": "上下文数量，仅当选择AiProxy时生效，建议1-5之间为佳",
+      "defaultValue": "5"
     },
     {
       "fieldName": "model",

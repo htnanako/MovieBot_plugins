@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 def main_config(config):
-    global base_url, proxies, api_key, model
+    global base_url, proxies, api_key, session_limit, model
     global qywx_base_url, sCorpID, sCorpsecret, sAgentid, sToken, sEncodingAESKey
     base_url = config.get('SERVICE')
     proxy = config.get('proxy')
@@ -40,6 +40,7 @@ def main_config(config):
             "sock5://": proxy
         }
     api_key = config.get('api_key')
+    session_limit = config.get('session_limit')
     model = config.get('model')
     qywx_base_url = config.get('qywx_base_url')
     sCorpID = config.get('sCorpID')
@@ -52,7 +53,7 @@ def main_config(config):
         if not config_item:
             logger.error(f"chatbot配置不完整，配置完成后重启。")
             return
-    logger.info(f"chatbot配置完成。base_url:{base_url}, API_KEY:{api_key[:7]}*****{api_key[-6:]}, Model:{model}")
+    logger.info(f"chatbot配置完成。Base_url:{base_url}, API_KEY:{api_key[:7]}*****{api_key[-6:]}, Model:{model}")
 
 
 @plugin.after_setup
@@ -119,12 +120,13 @@ class QywxSendMessage:
 
 
 class QywxTaskThread(threading.Thread):
-    def __init__(self, content: str, touser: str, agentid: str):
+    def __init__(self, query: str, touser: str, agentid: str, session_id: str):
         threading.Thread.__init__(self)
         self.name = "QywxTaskThread"
-        self.content = content
+        self.query = query
         self.touser = touser
         self.agentid = agentid
+        self.session_id = session_id
 
     def run(self):
         try:
@@ -132,7 +134,9 @@ class QywxTaskThread(threading.Thread):
                                       proxy=proxies,
                                       api_key=api_key,
                                       model=model,
-                                      query=self.content))
+                                      query=self.query,
+                                      session_id=self.session_id,
+                                      session_limit=session_limit))
             QywxSendMessage().send_text_message(result, self.touser)
         except Exception as e:
             logger.error(f'企业微信推送失败：{e}', exc_info=True)
@@ -187,12 +191,12 @@ def recv():
                 logger.info(f"Chat: {content.replace('/b', '').replace('/g', '').strip()}")
                 content = content.replace('/b', '').replace('/g', '').strip()
                 replymsg = f"思考中....\nOPENAI不支持Bing或Google搜索"
-            chat_thread = QywxTaskThread(content, fromuser, sAgentid)
+            chat_thread = QywxTaskThread(content, fromuser, sAgentid, session_id=fromuser)
             chat_thread.start()
             reply = f"<xml><ToUserName>{touser}</ToUserName><FromUserName>{fromuser}</FromUserName><CreateTime>{create_time}</CreateTime><MsgType>{msg_type}</MsgType><Content>{replymsg}</Content><MsgId>{msg_id}</MsgId><AgentID>{sAgentid}</AgentID></xml>"
         else:
             logger.info(f"Chat: {content}")
-            chat_thread = QywxTaskThread(content, fromuser, sAgentid)
+            chat_thread = QywxTaskThread(content, fromuser, sAgentid, session_id=fromuser)
             chat_thread.start()
             reply = f"<xml><ToUserName>{touser}</ToUserName><FromUserName>{fromuser}</FromUserName><CreateTime>{create_time}</CreateTime><MsgType>{msg_type}</MsgType><Content>思考中....</Content><MsgId>{msg_id}</MsgId><AgentID>{sAgentid}</AgentID></xml>"
         ret, send_Msg = wxcpt.EncryptMsg(reply, nonce, timestamp)

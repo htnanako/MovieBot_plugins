@@ -2,7 +2,7 @@
 
 > 基于MovieBot插件系统实现的企业微信ChatBot。
 
-> 目前支持OpenAI官方接口及AiProxy接口，不支持上下文。
+> 目前支持OpenAI官方接口及AiProxy接口。仅AiProxy接口支持上下文，请在设置中配置上下文数量。
 
 ### 使用
 
