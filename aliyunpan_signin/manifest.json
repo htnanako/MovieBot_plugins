@@ -3,7 +3,7 @@
   "title": "阿里云盘签到",
   "author": "NaNaKo_",
   "description": "阿里云盘签到。",
-  "version": "0.4",
+  "version": "0.5",
   "requirements": [],
   "configField": [
     {
@@ -55,6 +55,69 @@
       "fieldType": "String",
       "label": "小雅配置",
       "helperText": "格式为refreshToken:folder_id。不支持多个。",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "portainer_url",
+      "fieldType": "String",
+      "label": "Portainer 地址",
+      "helperText": "",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "portainer_access_token",
+      "fieldType": "String",
+      "label": "Portainer 的 access_token",
+      "helperText": "",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "env",
+      "fieldType": "String",
+      "label": "env，默认为2",
+      "helperText": "",
+      "defaultValue": "2"
+    },
+    {
+      "fieldName": "xy_name",
+      "fieldType": "String",
+      "label": "小雅 Docker 容器名称，默认为 xiaoya",
+      "helperText": "",
+      "defaultValue": "xiaoya"
+    },
+    {
+      "fieldName": "xy_diy",
+      "fieldType": "Bool",
+      "label": "开启小雅美化，开启后，下方设置生效。",
+      "helperText": "",
+      "defaultValue": false
+    },
+    {
+      "fieldName": "db_path",
+      "fieldType": "String",
+      "label": "小雅 data.db 文件路径，末尾不带/",
+      "helperText": "示例：/appdata/xiaoya/data.db, 注意：data.db 文件需要映射到 Mbot 容器",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "new_head_value",
+      "fieldType": "String",
+      "label": "自定义小雅头部",
+      "helperText": "",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "new_body_value",
+      "fieldType": "String",
+      "label": "自定义小雅内容",
+      "helperText": "",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "new_readme",
+      "fieldType": "String",
+      "label": "小雅首页 ReadME 介绍",
+      "helperText": "",
       "defaultValue": ""
     }
   ],
