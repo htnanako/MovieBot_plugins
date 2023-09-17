@@ -64,7 +64,7 @@ def aliyunpan_signin_task():
 
 @plugin.task('xiaoya_diy_task', '小雅自动重启与美化', cron_expression='30 6,11,19 * * *')
 def xiaoya_diy_task():
-    logging.info(f"「小雅自动重启与美化」开始手动运行")
+    logging.info(f"「小雅自动重启与美化」开始运行")
     if portainer_url and portainer_access_token:
         rusult = restart_docker(portainer_url, portainer_access_token, env,xy_name)
         logging.info(f"「小雅自动重启」第 1/2 次重启：{rusult}")
