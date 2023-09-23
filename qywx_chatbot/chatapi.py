@@ -19,32 +19,20 @@ ERROR_CODE = {
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
 async def chat(base_url, proxy, api_key, model, query, session_id=None, session_limit=None):
     query = query.strip()
-    if "openai" in base_url:
-        params = {
-            "model": model,
-            "messages": [
-                {
-                    "role": "user",
-                    "content": query
-                }
-            ],
-            "max_tokens": 2048,
-        }
-    else:
-        session_id = session_id
-        session_limit = session_limit if session_limit else 0
-        params = {
-            "model": model,
-            "messages": [
-                {
-                    "role": "user",
-                    "content": query
-                }
-            ],
-            "session_id": session_id,
-            "session_limit": session_limit,
-            "max_tokens": 2048,
-        }
+    params = {
+        "model": model,
+        "messages": [
+            {
+                "role": "user",
+                "content": query
+            }
+        ],
+        "max_tokens": 2048,
+    }
+    if 'aiproxy' in base_url:
+        if session_limit != '' and session_limit != '0':
+            params["session_id"] = session_id
+            params["session_limit"] = session_limit
     try:
         r = httpx.post(url=f"{base_url}/v1/chat/completions",
                        headers={
@@ -72,4 +60,4 @@ async def chat(base_url, proxy, api_key, model, query, session_id=None, session_
             return f'{ERROR_CODE[r.status_code]}'
     except Exception as e:
         logger.error(f"chat error: {e}")
-        return f'思考失败，请查看日志。'
+        return f'思考失败，{e}'
