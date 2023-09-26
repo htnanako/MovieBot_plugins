@@ -6,6 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 ERROR_CODE = {
+    400: '[ERROR: 400] 提示触发 Azure OpenAI 的内容管理策略，响应被过滤 | The response was filtered due to the prompt triggering Azure OpenAI’s content management policy',
     401: '[ERROR: 401] 提供错误的API密钥 | Incorrect API key provided',
     403: '[ERROR: 403] 服务器拒绝访问，请稍后再试 | Server refused to access, please try again later',
     429: '[ERROR: 429] 额度不足 | Quota exhausted',
@@ -57,7 +58,7 @@ async def chat(base_url, proxy, api_key, model, query, session_id=None, session_
             return answer
         else:
             logger.error(f"chat error: {j}")
-            return f'{ERROR_CODE[r.status_code]}'
+            return f'{ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else f"[ERROR: {r.status_code}] 未知错误，请检查日志 | Unknown error, please check the log"}'
     except Exception as e:
         logger.error(f"chat error: {e}")
         return f'思考失败，{e}'
