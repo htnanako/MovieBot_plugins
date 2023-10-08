@@ -93,7 +93,7 @@ def zhuque_fire_echo(ctx: PluginCommandContext):
             delta_second = delta.total_seconds()
             remain_time = parse_seconds(delta_second)
             _LOGGER.info(f'[zhuque_game_file]:时间未到。还需要{remain_time}')
-            return PluginCommandContext(True, f'时间未到。')
+            return PluginCommandResponse(True, f'时间未到。')
     except Exception as e:
         logging.error(f'[zhuque_game_file]:释放技能出错了,错误信息：{e}', exc_info=True)
         return PluginCommandResponse(False, f'释放技能出错了,{e}')
