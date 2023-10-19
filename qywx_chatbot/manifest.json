@@ -3,7 +3,7 @@
   "title": "企业微信ChatBot",
   "author": "NaNaKo_",
   "description": "通过企业微信与ChatGPT聊天",
-  "version": "0.7",
+  "version": "0.8",
   "requirements": [],
   "configField": [
     {
@@ -12,8 +12,8 @@
       "label": "GPT接口",
       "helperText": "选择GPT接口",
       "enumValues": {
-        "OpenAI": "https://api.openai.com",
-        "AiProxy": "https://api.aiproxy.io"
+        "OpenAI": "openai",
+        "AiProxy": "aiproxy"
       },
       "multiValue": false
     },
@@ -22,6 +22,13 @@
       "fieldType": "String",
       "label": "代理设置",
       "helperText": "留空则不使用代理。支持通过HTTP代理、SOCKS代理发送消息。示范：http://localhost:8030 或 socks5://user:pass@host:port",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "self_url",
+      "fieldType": "String",
+      "label": "自定义接口地址",
+      "helperText": "自定义接口地址，如果不懂什么意思不要填写。",
       "defaultValue": ""
     },
     {
@@ -42,12 +49,14 @@
       "fieldName": "model",
       "fieldType": "Enum",
       "label": "模型",
-      "helperText": "选择对话模型",
+      "helperText": "选择对话模型，Claude模型仅支持AIProxy。",
       "enumValues": {
         "gpt-3.5-turbo": "gpt-3.5-turbo",
         "gpt-3.5-turbo-0613": "gpt-3.5-turbo-0613",
         "gpt-4": "gpt-4",
-        "gpt-4-0613": "gpt-4-0613"
+        "gpt-4-0613": "gpt-4-0613",
+        "claude-instant-1(对标GPT-3.5)": "claude-instant-1",
+        "claude-2(对标GPT-4)": "claude-2"
       },
       "multiValue": false
     },

@@ -28,9 +28,17 @@ logger = logging.getLogger(__name__)
 
 
 def main_config(config):
-    global base_url, proxies, api_key, session_limit, model
+    global SERVICE, base_url, proxies, self_url, api_key, session_limit, model
     global qywx_base_url, sCorpID, sCorpsecret, sAgentid, sToken, sEncodingAESKey
-    base_url = config.get('SERVICE')
+    # base_url = config.get('SERVICE')
+    SERVICE = config.get('SERVICE')
+    self_url = config.get('self_url')
+    if self_url:
+        base_url = self_url.strip('/')
+    elif SERVICE == 'openai':
+        base_url = 'https://api.openai.com'
+    elif SERVICE == 'aiproxy':
+        base_url = 'https://api.aiproxy.io'
     proxy = config.get('proxy')
     proxies = None
     if proxy:
@@ -53,6 +61,9 @@ def main_config(config):
         if not config_item:
             logger.error(f"chatbot配置不完整，配置完成后重启。")
             return
+    if 'openai' in SERVICE and 'claude' in model:
+        logger.error(f"OPENAI官方接口不支持Claude模型，请重新选择。")
+        return
     logger.info(f"chatbot配置完成。Base_url:{base_url}, API_KEY:{api_key[:7]}*****{api_key[-6:]}, Model:{model}")
 
 
@@ -130,7 +141,8 @@ class QywxTaskThread(threading.Thread):
 
     def run(self):
         try:
-            result = asyncio.run(chat(base_url=base_url,
+            result = asyncio.run(chat(SERVICE=SERVICE,
+                                      base_url=base_url,
                                       proxy=proxies,
                                       api_key=api_key,
                                       model=model,
@@ -183,19 +195,26 @@ def recv():
         create_time = decrypt_data.get('CreateTime')
         msg_type = decrypt_data.get('MsgType')
         msg_id = decrypt_data.get('MsgId')
+        if 'openai' in SERVICE and 'claude' in model:
+            logger.info(f"Chat: {content}[{model}]")
+            logger.error(f"OPENAI官方接口不支持Claude模型，请重新选择。")
+            reply_msg = f"OPENAI官方接口不支持Claude模型"
+            reply = f"<xml><ToUserName>{touser}</ToUserName><FromUserName>{fromuser}</FromUserName><CreateTime>{create_time}</CreateTime><MsgType>{msg_type}</MsgType><Content>{reply_msg}</Content><MsgId>{msg_id}</MsgId><AgentID>{sAgentid}</AgentID></xml>"
+            ret, send_Msg = wxcpt.EncryptMsg(reply, nonce, timestamp)
+            return send_Msg, 200
         if content.startswith("/b") or content.startswith("/g"):
-            if 'aiproxy' in base_url:
-                logger.info(f"Chat: {content.replace('/b', '').replace('/g', '').strip()}")
+            if 'aiproxy' in SERVICE:
+                logger.info(f"Chat: {content.replace('/b', '').replace('/g', '').strip()}[{model}]")
                 replymsg = "联网搜索中...."
             else:
-                logger.info(f"Chat: {content.replace('/b', '').replace('/g', '').strip()}")
+                logger.info(f"Chat: {content.replace('/b', '').replace('/g', '').strip()}[{model}]")
                 content = content.replace('/b', '').replace('/g', '').strip()
-                replymsg = f"思考中....\nOPENAI不支持Bing或Google搜索"
+                replymsg = f"思考中....\nOPENAI官方接口不支持Bing或Google搜索"
             chat_thread = QywxTaskThread(content, fromuser, sAgentid, session_id=fromuser)
             chat_thread.start()
             reply = f"<xml><ToUserName>{touser}</ToUserName><FromUserName>{fromuser}</FromUserName><CreateTime>{create_time}</CreateTime><MsgType>{msg_type}</MsgType><Content>{replymsg}</Content><MsgId>{msg_id}</MsgId><AgentID>{sAgentid}</AgentID></xml>"
         else:
-            logger.info(f"Chat: {content}")
+            logger.info(f"Chat: {content}[{model}]")
             chat_thread = QywxTaskThread(content, fromuser, sAgentid, session_id=fromuser)
             chat_thread.start()
             reply = f"<xml><ToUserName>{touser}</ToUserName><FromUserName>{fromuser}</FromUserName><CreateTime>{create_time}</CreateTime><MsgType>{msg_type}</MsgType><Content>思考中....</Content><MsgId>{msg_id}</MsgId><AgentID>{sAgentid}</AgentID></xml>"

@@ -18,7 +18,7 @@ ERROR_CODE = {
 
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
-async def chat(base_url, proxy, api_key, model, query, session_id=None, session_limit=None):
+async def chat(SERVICE, base_url, proxy, api_key, model, query, session_id=None, session_limit=None):
     query = query.strip()
     params = {
         "model": model,
@@ -30,7 +30,7 @@ async def chat(base_url, proxy, api_key, model, query, session_id=None, session_
         ],
         "max_tokens": 2048,
     }
-    if 'aiproxy' in base_url:
+    if 'aiproxy' in SERVICE:
         if session_limit != '' and session_limit != '0':
             params["session_id"] = session_id
             params["session_limit"] = session_limit
