@@ -4,6 +4,7 @@ import httpx
 import json
 import asyncio
 import logging
+from cacheout import Cache
 from flask import Blueprint, request
 from xml.etree.ElementTree import fromstring
 from tenacity import wait_fixed, stop_after_attempt, retry
@@ -25,6 +26,8 @@ bp = Blueprint('qywx_chatbot', __name__)
 plugin.register_blueprint('qywx_chatbot', bp)
 
 logger = logging.getLogger(__name__)
+
+token_cache = Cache(maxsize=1000)
 
 
 def main_config(config):
@@ -85,8 +88,8 @@ class QywxSendMessage:
         self.sAgentid = sAgentid
         self.sToken = sToken
         self.sEncodingAESKey = sEncodingAESKey
-        self.token_cache = None
-        self.token_expires_time = None
+        self.token_cache = token_cache.get('access_token')
+        self.token_expires_time = token_cache.get('expires_time')
 
     @retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
     def get_access_token(self):
@@ -100,6 +103,8 @@ class QywxSendMessage:
         if j['errcode'] == 0:
             self.token_expires_time = datetime.datetime.now() + datetime.timedelta(seconds=j['expires_in'] - 500)
             self.token_cache = j['access_token']
+            token_cache.set('access_token', self.token_cache, ttl=j['expires_in'] - 500)
+            token_cache.set('expires_time', self.token_expires_time, ttl=j['expires_in'] - 500)
             return self.token_cache
         else:
             return None

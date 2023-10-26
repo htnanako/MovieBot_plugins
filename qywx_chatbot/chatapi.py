@@ -58,7 +58,11 @@ async def chat(SERVICE, base_url, proxy, api_key, model, query, session_id=None,
             return answer
         else:
             logger.error(f"chat error: {j}")
-            return f'{ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else f"[ERROR: {r.status_code}] 未知错误，请检查日志 | Unknown error, please check the log"}'
+
+            def unknown_error_code(error_code):
+                return f'[ERROR: {error_code}] 未知错误，请检查日志 | Unknown error, please check the log'
+
+            return f'{ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else unknown_error_code(r.status_code)}'
     except Exception as e:
         logger.error(f"chat error: {e}")
         return f'思考失败，{e}'
