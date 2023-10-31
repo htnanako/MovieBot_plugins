@@ -1,5 +1,8 @@
+import asyncio
+
 import httpx
 import logging
+import datetime
 
 from .utils import refreshTokenGenerator, updateAccesssToken, the_last_day, send_notify
 
@@ -71,6 +74,16 @@ class SignTask:
             raise Exception(jsonData["message"])
         return jsonData["result"]
 
+    async def lastday_get_reward(self, index, nick_name, access_token):
+        today = datetime.date.today()
+        Reward_info = []
+        for day in range(1, today.day + 1):
+            reward = self.getReward(access_token, day)
+            Reward_info.append(f"Day{day:02d}:{reward.get('name', '')} {reward.get('description', '')}")
+        if len(Reward_info) > 0:
+            reward_message = f"{nick_name}(账号{index + 1}),领奖结果如下：\n" + '\n'.join(Reward_info)
+            send_notify('阿里云盘签到', reward_message, self.uid, self.channel_item)
+
     # 主程序
     def main(self):
         messageList = []
@@ -83,10 +96,10 @@ class SignTask:
                     remarks = nick_name + '(' + remarks + ')'
                 message = self.signin(refreshToken_item, access_token, remarks)
                 messageList.append(message)
+                if not self.reward_enable and the_last_day():
+                    asyncio.run(self.lastday_get_reward(index, nick_name, access_token))
             except Exception as e:
                 messageList.append(str(e))
 
         message_last = '\n'.join(messageList)
-        if not self.reward_enable and the_last_day():
-            message_last += f'\n今天是月末了，记得去领奖励。'
         send_notify('阿里云盘签到', message_last, self.uid, self.channel_item)

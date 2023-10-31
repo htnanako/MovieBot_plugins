@@ -3,7 +3,7 @@
   "title": "阿里云盘签到",
   "author": "NaNaKo_",
   "description": "阿里云盘签到。",
-  "version": "0.5",
+  "version": "0.6",
   "requirements": [],
   "configField": [
     {
@@ -39,7 +39,7 @@
     {
       "fieldName": "reward_enable",
       "fieldType": "Bool",
-      "label": "签到后是否自动领奖",
+      "label": "每日签到后是否自动领奖。关闭后会在月底最后一天自动领取所有奖励。",
       "helperText": "",
       "defaultValue": false
     },
