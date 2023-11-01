@@ -1,0 +1,13 @@
+{
+  "name": "NaNaKo_ToolBox",
+  "title": "奈奈子的工具箱",
+  "author": "NaNaKo_",
+  "description": "奈奈子的工具箱。具体信息查看Github Readme。",
+  "version": "0.4",
+  "requirements": [],
+  "configField": [],
+  "githubUrl": "",
+  "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/NaNaKo_ToolBox",
+  "logoUrl": "/plugins/NaNaKo_ToolBox/logo.png",
+  "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg"
+}

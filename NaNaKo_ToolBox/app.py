@@ -6,18 +6,13 @@ from .event import CommandList
 
 APP_USER_AGENT = "moviebot/command_api"
 
-bp = Blueprint('command_api', __name__)
+bp = Blueprint('toolbox', __name__)
 """
 把flask blueprint注册到容器
 这个URL访问完整的前缀是 /api/plugins/你设置的前缀
 """
-plugin.register_blueprint('command_api', bp)
+plugin.register_blueprint('toolbox', bp)
 command_list = CommandList()
-
-
-# @bp.route('/', methods=["GET"])
-# def index():
-#     return "hello world!", 200
 
 
 @bp.route('/search', methods=["GET"])
