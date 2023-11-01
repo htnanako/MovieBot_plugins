@@ -1,6 +1,6 @@
 import httpx
-from mbot.core.plugins import PluginMeta
-from mbot.core.plugins import plugin, PluginCommandContext, PluginCommandResponse
+from mbot.core.plugins import PluginMeta, plugin, PluginCommandContext, PluginCommandResponse
+from mbot.core.params import ArgSchema, ArgType
 
 from .config import *
 
@@ -17,6 +17,16 @@ def restart_command(ctx: PluginCommandContext):
 def clear_notify_command(ctx: PluginCommandContext):
     if clear_notify():
         return PluginCommandResponse(True, f'所有系统通知已清除！')
+
+
+@plugin.command(name='install_module', title='安装模块', desc='点击手动安装模块', icon='AutoAwesome',
+                run_in_background=True)
+def install_module_command(
+        ctx: PluginCommandContext,
+        module_name: ArgSchema(ArgType.String, '模块名称', '准确输入要安装的模块名称。安装完成后请重启程序。', required=True)):
+    from .install_modules import InstallModule
+    InstallModule(module_name=module_name).start()
+    return PluginCommandResponse(True, f'正在安装「{module_name}」模块，如日志无报错，稍后自行重启容器生效。')
 
 
 def restart_app():
