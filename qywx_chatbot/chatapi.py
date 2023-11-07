@@ -1,7 +1,9 @@
 import httpx
 import re
-from tenacity import wait_fixed, stop_after_attempt, retry
 import logging
+from tenacity import wait_fixed, stop_after_attempt, retry
+
+from .utils import save_img
 
 logger = logging.getLogger(__name__)
 
@@ -93,6 +95,7 @@ async def draw(base_url, proxy, api_key, prompt, draw_info):
         if r.status_code == 200:
             img_url = j.get('data')[0].get('url')
             img_prompt = j.get('data')[0].get('revised_prompt')
+            await save_img(img_url, img_prompt)
             logger.info(f'「ChatBot」:draw image complete: {img_prompt}')
             result = {
                 "success": True,

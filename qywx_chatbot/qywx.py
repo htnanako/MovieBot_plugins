@@ -254,7 +254,7 @@ def recv():
         msg_type = decrypt_data.get('MsgType')
         msg_id = decrypt_data.get('MsgId')
         if content.startswith("画"):
-            logger.info(f"「ChatBot」:Draw: {content.replace('画', '').strip()}[dall-e-3]")
+            logger.info(f"「ChatBot」:Draw: {content.strip()}[dall-e-3]")
             draw_thread = QywxImgMsgThread(content.replace('画', '').strip(), fromuser, sAgentid)
             draw_thread.start()
             reply = f"<xml><ToUserName>{touser}</ToUserName><FromUserName>{fromuser}</FromUserName><CreateTime>{create_time}</CreateTime><MsgType>{msg_type}</MsgType><Content>正在画图，请稍后....</Content><MsgId>{msg_id}</MsgId><AgentID>{sAgentid}</AgentID></xml>"
