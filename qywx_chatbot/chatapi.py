@@ -17,10 +17,14 @@ ERROR_CODE = {
 }
 
 
+def unknown_error_code(error_code):
+    return f'[ERROR: {error_code}] 未知错误，请检查日志 | Unknown error, please check the log'
+
+
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
 async def chat(SERVICE, base_url, proxy, api_key, model, query, session_id=None, session_limit=None):
     query = query.strip()
-    params = {
+    json = {
         "model": model,
         "messages": [
             {
@@ -32,21 +36,21 @@ async def chat(SERVICE, base_url, proxy, api_key, model, query, session_id=None,
     }
     if 'aiproxy' in SERVICE:
         if session_limit != '' and session_limit != '0':
-            params["session_id"] = session_id
-            params["session_limit"] = session_limit
+            json["session_id"] = session_id
+            json["session_limit"] = session_limit
     try:
         r = httpx.post(url=f"{base_url}/v1/chat/completions",
                        headers={
                            "Content-Type": "application/json",
                            "Authorization": f"Bearer {api_key}"
                        },
-                       json=params,
+                       json=json,
                        proxies=proxy,
                        timeout=180)
         j = r.json()
         if r.status_code == 200:
             answer = j.get('choices')[0].get('message').get('content')
-            logger.info(f'Chat answer: {answer}')
+            logger.info(f'「ChatBot」:Chat answer: {answer}')
             pattern = r'\[([^\]]+)\]\(([^)]+)\)'
 
             def replace_link(match):
@@ -57,12 +61,56 @@ async def chat(SERVICE, base_url, proxy, api_key, model, query, session_id=None,
             answer = re.sub(pattern, replace_link, answer)
             return answer
         else:
-            logger.error(f"chat error: {j}")
-
-            def unknown_error_code(error_code):
-                return f'[ERROR: {error_code}] 未知错误，请检查日志 | Unknown error, please check the log'
-
+            logger.error(f"「ChatBot」:chat error: {j}")
             return f'{ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else unknown_error_code(r.status_code)}'
     except Exception as e:
-        logger.error(f"chat error: {e}")
+        logger.error(f"「ChatBot」:chat error: {e}")
         return f'思考失败，{e}'
+
+
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
+async def draw(base_url, proxy, api_key, prompt, draw_info):
+    prompt = prompt.strip()
+    size = draw_info.split('_')[0]
+    quality = draw_info.split('_')[1]
+    json = {
+        "model": "dall-e-3",
+        "prompt": prompt,
+        "n": 1,
+        "size": size,
+        "quality": quality
+    }
+    try:
+        r = httpx.post(url=f"{base_url}/v1/images/generations",
+                       headers={
+                           "Content-Type": "application/json",
+                           "Authorization": f"Bearer {api_key}"
+                       },
+                       json=json,
+                       proxies=proxy,
+                       timeout=300)
+        j = r.json()
+        if r.status_code == 200:
+            img_url = j.get('data')[0].get('url')
+            img_prompt = j.get('data')[0].get('revised_prompt')
+            logger.info(f'「ChatBot」:draw image complete: {img_prompt}')
+            result = {
+                "success": True,
+                "img_url": img_url,
+                "img_prompt": img_prompt
+            }
+            return result
+        else:
+            logger.error(f"「ChatBot」:draw error: {j}")
+            result = {
+                "success": False,
+                "error": f'{ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else unknown_error_code(r.status_code)}'
+            }
+            return result
+    except Exception as e:
+        logger.error(f"「ChatBot」:draw error: {e}")
+        result = {
+            "success": False,
+            "error": f'绘图失败，{e}'
+        }
+        return result

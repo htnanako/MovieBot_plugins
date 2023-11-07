@@ -3,7 +3,7 @@
   "title": "企业微信ChatBot",
   "author": "NaNaKo_",
   "description": "通过企业微信与ChatGPT聊天",
-  "version": "0.8.1",
+  "version": "0.9",
   "requirements": [],
   "configField": [
     {
@@ -57,6 +57,21 @@
         "gpt-4-0613": "gpt-4-0613",
         "claude-instant-1(对标GPT-3.5)": "claude-instant-1",
         "claude-2(对标GPT-4)": "claude-2"
+      },
+      "multiValue": false
+    },
+    {
+      "fieldName": "draw_info",
+      "fieldType": "Enum",
+      "label": "画图尺寸及质量",
+      "helperText": "选择画图尺寸及质量，对应三个尺寸及两个质量",
+      "enumValues": {
+        "1024x1024_standard": "1024x1024_standard",
+        "1024x1792_standard": "1024x1792_standard",
+        "1792x1024_standard": "1792x1024_standard",
+        "1024x1024_hd": "1024x1024_hd",
+        "1024x1792_hd": "1024x1792_hd",
+        "1792x1024_hd": "1792x1024_hd"
       },
       "multiValue": false
     },
