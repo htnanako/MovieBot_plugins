@@ -1,7 +1,7 @@
 import httpx
 import re
 import logging
-from tenacity import wait_fixed, stop_after_attempt, retry
+from tenacity import retry, wait_random_exponential, stop_after_attempt
 
 from .utils import save_img
 
@@ -23,7 +23,7 @@ def unknown_error_code(error_code):
     return f'[ERROR: {error_code}] 未知错误，请检查日志 | Unknown error, please check the log'
 
 
-@retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
+@retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(3))
 async def chat(SERVICE, base_url, proxy, api_key, model, query, session_id=None, session_limit=None):
     query = query.strip()
     json = {
@@ -63,14 +63,14 @@ async def chat(SERVICE, base_url, proxy, api_key, model, query, session_id=None,
             answer = re.sub(pattern, replace_link, answer)
             return answer
         else:
-            logger.error(f"「ChatBot」:chat error: {j}")
+            logger.error(f"「ChatBot」Chat Error: {j}")
             return f'{ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else unknown_error_code(r.status_code)}'
     except Exception as e:
-        logger.error(f"「ChatBot」:chat error: {e}")
+        logger.error(f"「ChatBot」Chat Error: {e}")
         return f'思考失败，{e}'
 
 
-@retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
+@retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(3))
 async def draw(base_url, proxy, api_key, prompt, draw_info):
     prompt = prompt.strip()
     size = draw_info.split('_')[0]
@@ -96,7 +96,7 @@ async def draw(base_url, proxy, api_key, prompt, draw_info):
             img_url = j.get('data')[0].get('url')
             img_prompt = j.get('data')[0].get('revised_prompt')
             await save_img(img_url, img_prompt)
-            logger.info(f'「ChatBot」:draw image complete: {img_prompt}')
+            logger.info(f'「ChatBot」Draw Image Complete: {img_prompt}')
             result = {
                 "success": True,
                 "img_url": img_url,
@@ -104,14 +104,14 @@ async def draw(base_url, proxy, api_key, prompt, draw_info):
             }
             return result
         else:
-            logger.error(f"「ChatBot」:draw error: {j}")
+            logger.error(f"「ChatBot」Draw Error: {j}")
             result = {
                 "success": False,
-                "error": f'{ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else unknown_error_code(r.status_code)}'
+                "error": j.get["error"] if j.get["error"] else {ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else unknown_error_code(r.status_code)}
             }
             return result
     except Exception as e:
-        logger.error(f"「ChatBot」:draw error: {e}")
+        logger.error(f"「ChatBot」Draw Error: {e}")
         result = {
             "success": False,
             "error": f'绘图失败，{e}'
