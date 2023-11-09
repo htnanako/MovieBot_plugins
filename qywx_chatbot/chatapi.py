@@ -63,10 +63,10 @@ async def chat(SERVICE, base_url, proxy, api_key, model, query, session_id=None,
             answer = re.sub(pattern, replace_link, answer)
             return answer
         else:
-            logger.error(f"「ChatBot」Chat Error: {j}")
+            logger.error(f"「ChatBot」Chat Error: {j}", exc_info=True)
             return f'{ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else unknown_error_code(r.status_code)}'
     except Exception as e:
-        logger.error(f"「ChatBot」Chat Error: {e}")
+        logger.error(f"「ChatBot」Chat Error: {e}", exc_info=True)
         return f'思考失败，{e}'
 
 
@@ -104,14 +104,14 @@ async def draw(base_url, proxy, api_key, prompt, draw_info):
             }
             return result
         else:
-            logger.error(f"「ChatBot」Draw Error: {j}")
+            logger.error(f"「ChatBot」Draw Error: {j}", exc_info=True)
             result = {
                 "success": False,
-                "error": j.get["error"] if j.get["error"] else {ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else unknown_error_code(r.status_code)}
+                "error": j.get("error") if j.get("error") else {ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else unknown_error_code(r.status_code)}
             }
             return result
     except Exception as e:
-        logger.error(f"「ChatBot」Draw Error: {e}")
+        logger.error(f"「ChatBot」Draw Error: {e}", exc_info=True)
         result = {
             "success": False,
             "error": f'绘图失败，{e}'
