@@ -20,4 +20,4 @@
 
 你可以送我一杯咖啡，以表示对这个项目的支持😉
 
-![](https://nanako-1253183981.cos.ap-guangzhou.myqcloud.com/public-IMG/bmc_qr.png)
+<img src"https://nanako-1253183981.cos.ap-guangzhou.myqcloud.com/public-IMG/bmc_qr.png" width="300" />
