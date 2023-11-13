@@ -13,12 +13,11 @@
 
 #### 主页
 
-- [奈奈子的博客](https://blog.nanako.vip)
+- [首页](https://nnk.im)
+- [博客](https://blog.nanako.vip)
 
-#### 请我喝杯奶茶
+#### 支持一下
 
-- [https://pay.nanako.vip](https://pay.nanako.vip)
+你可以送我一杯咖啡，以表示对这个项目的支持😉
 
----
-
-![GenshinImpact](https://raw.githubusercontent.com/htnanako/htnanako/main/img/hutao.png)
+![](https://nanako-1253183981.cos.ap-guangzhou.myqcloud.com/public-IMG/bmc_qr.png)
