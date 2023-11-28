@@ -1,3 +1,4 @@
+import os
 import datetime
 import threading
 import httpx
@@ -5,7 +6,7 @@ import json
 import asyncio
 import logging
 from cacheout import Cache
-from flask import Blueprint, request
+from flask import Blueprint, request, send_file
 from xml.etree.ElementTree import fromstring
 from tenacity import wait_fixed, stop_after_attempt, retry
 from typing import Dict, Any
@@ -15,6 +16,7 @@ from .qywx_Crypt.WXBizMsgCrypt import WXBizMsgCrypt
 
 from mbot.core.plugins import PluginMeta
 from mbot.core.plugins import plugin, PluginCommandContext, PluginCommandResponse
+from mbot.openapi import mbot_api
 
 APP_USER_AGENT = "moviebot/qywx_chatbot"
 
@@ -28,6 +30,9 @@ plugin.register_blueprint('qywx_chatbot', bp)
 logger = logging.getLogger(__name__)
 
 token_cache = Cache(maxsize=1000)
+server = mbot_api
+web = server.config.web
+server_url = web.server_url
 
 
 def main_config(config):
@@ -191,6 +196,7 @@ class QywxImgMsgThread(threading.Thread):
         self.prompt = prompt
         self.touser = touser
         self.agentid = agentid
+        self.server_url = server_url.rstrip('/')
 
     def run(self):
         try:
@@ -200,8 +206,12 @@ class QywxImgMsgThread(threading.Thread):
                                       prompt=self.prompt,
                                       draw_info=draw_info))
             if result.get("success"):
-                img_url = result.get("img_url")
                 img_prompt = result.get("img_prompt")
+                img_name = result.get("img_name")
+                if self.server_url:
+                    img_url = f"{self.server_url}/api/plugins/qywx_chatbot/img?img_name={img_name}"
+                else:
+                    img_url = result.get("img_url")
                 title = "Draw Image Complete"
                 QywxSendMessage().send_img_text_message(title, img_prompt, img_url, self.touser)
             else:
@@ -288,3 +298,12 @@ def recv():
     except Exception as e:
         logger.error(f'「ChatBot」处理微信消息出错。{e}', exc_info=True)
         return '', 500
+
+
+@bp.route("/img", methods=['GET'])
+def show_img():
+    img_name = request.args.get('img_name')
+    img_path = f'/data/img_output/{img_name}'
+    if not os.path.exists(img_path):
+        return '', 404
+    return send_file(img_path, mimetype='image/png')

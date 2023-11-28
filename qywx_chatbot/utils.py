@@ -26,7 +26,7 @@ async def save_img(img_url, img_prompt):
         with open(img_info_file, 'a+') as f:
             img_info = f"{img_name}: {img_prompt}"
             f.write(img_info + '\n')
-        return True
+        return img_name
     except Exception as e:
         logger.error(f"「ChatBot」Save Image Error: {e}", exc_info=True)
         return False

@@ -95,12 +95,13 @@ async def draw(base_url, proxy, api_key, prompt, draw_info):
         if r.status_code == 200:
             img_url = j.get('data')[0].get('url')
             img_prompt = j.get('data')[0].get('revised_prompt')
-            await save_img(img_url, img_prompt)
+            img_name = await save_img(img_url, img_prompt)
             logger.info(f'「ChatBot」Draw Image Complete: {img_prompt}')
             result = {
                 "success": True,
                 "img_url": img_url,
-                "img_prompt": img_prompt
+                "img_prompt": img_prompt,
+                "img_name": img_name
             }
             return result
         else:
