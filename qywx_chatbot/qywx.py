@@ -196,7 +196,7 @@ class QywxImgMsgThread(threading.Thread):
         self.prompt = prompt
         self.touser = touser
         self.agentid = agentid
-        self.server_url = server_url.rstrip('/')
+        self.server_url = server_url
 
     def run(self):
         try:
@@ -209,7 +209,7 @@ class QywxImgMsgThread(threading.Thread):
                 img_prompt = result.get("img_prompt")
                 img_name = result.get("img_name")
                 if self.server_url:
-                    img_url = f"{self.server_url}/api/plugins/qywx_chatbot/img?img_name={img_name}"
+                    img_url = f"{self.server_url.rstrip('/')}/api/plugins/qywx_chatbot/img?img_name={img_name}"
                 else:
                     img_url = result.get("img_url")
                 title = "Draw Image Complete"

@@ -3,7 +3,7 @@
   "title": "企业微信ChatBot",
   "author": "NaNaKo_",
   "description": "通过企业微信与ChatGPT聊天",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "requirements": [],
   "configField": [
     {
