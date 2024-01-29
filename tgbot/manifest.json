@@ -1,0 +1,42 @@
+{
+  "name": "tgbot",
+  "title": "Telegram机器人",
+  "author": "WWWW NaNaKo_",
+  "description": "通过TG_Bot交互机器人搜索订阅",
+  "version": "0.5",
+  "requirements": [],
+  "configField": [
+    {
+      "fieldName": "base_url",
+      "fieldType": "String",
+      "label": "推送api地址",
+      "helperText": "telegram的api服务地址，默认是官方地址:https://api.telegram.org/bot，可以改为自建",
+      "defaultValue": "https://api.telegram.org/bot"
+    },
+    {
+      "fieldName": "TGbotTOKEN",
+      "fieldType": "String",
+      "label": "TGbotTOKEN",
+      "helperText": "从Bot_Father获取TG_Bot的token，输入bot后面的内容，如：56273XXXXX:XXXXXXXvsg1OtxmWXIFNqnxEizJU",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "chat_id",
+      "fieldType": "String",
+      "label": "UserId",
+      "helperText": "可使用此机器人的用户id，多用户使用英文逗号隔开",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "proxy",
+      "fieldType": "String",
+      "label": "代理地址",
+      "helperText": "http或socks代理用于连接Telegram，留空不使用",
+      "defaultValue": ""
+    }
+  ],
+  "logoUrl": "/plugins/tgbot/logo.jpg",
+  "githubUrl": "https://github.com/WWWWM03/MovieBotPlugins/tree/main/tgbot",
+  "helpDocUrl": "https://github.com/WWWWM03/MovieBotPlugins/tree/main/tgbot",
+  "dependencies": null
+}
