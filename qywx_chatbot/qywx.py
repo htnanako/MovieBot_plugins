@@ -212,6 +212,8 @@ class QywxImgMsgThread(threading.Thread):
                     img_url = f"{self.server_url.rstrip('/')}/api/plugins/qywx_chatbot/img?img_name={img_name}"
                 else:
                     img_url = result.get("img_url")
+                if not img_name:
+                    img_url = result.get("img_url")
                 title = "Draw Image Complete"
                 QywxSendMessage().send_img_text_message(title, img_prompt, img_url, self.touser)
             else:

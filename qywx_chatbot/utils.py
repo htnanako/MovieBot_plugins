@@ -22,15 +22,36 @@ async def save_img(img_url, img_prompt):
         for item in params_source.split('&'):
             params[item.split('=')[0]] = item.split('=')[1]
         headers = {
-            "Host": "oaidalleapiprodscus.blob.core.windows.net",
+            "Host": url.split('/')[2],
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "Accept-Encoding": "gzip, deflate, br",
+            "Cache-Control": "max-age=0",
+            "Connection": "keep-alive",
+            "DNT": "1",
+            "Pragma": "no-cache",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
         }
-        img_content = httpx.get(url=url,
-                                headers=headers,
-                                params=params,
-                                follow_redirects=True,
-                                timeout=180).content
+
+        def get_image_content():
+            r = httpx.get(url=url,
+                          headers=headers,
+                          params=params,
+                          follow_redirects=True,
+                          timeout=180)
+            return r
+
+        img_content = ''
+        for i in range(3):
+            r = get_image_content()
+            if "AuthenticationFailed" in r.text:
+                print(f"「ChatBot」Get Image Error: {r.text}")
+                continue
+            img_content = r.content
+            break
+        if not img_content:
+            logger.error(f"「ChatBot」图片下载失败, 将使用源链接，会到期失效。")
+            return None
+
         img_basename = img_url.split('img-')[1].split('.png')[0]
         img_name = f'{img_basename}_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.png'
         img_path = os.path.join(save_path, img_name)
