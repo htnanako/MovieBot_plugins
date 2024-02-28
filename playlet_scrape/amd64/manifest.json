@@ -1,0 +1,44 @@
+{
+    "name": "playlet_scrape",
+    "title": "短剧刮削",
+    "author": "NaNaKo",
+    "description": "短剧刮削插件。请仔细查看Github的README后再使用。仅支持amd64设备使用。",
+    "version": "0.0.1",
+    "requirements": [],
+    "dependencies": {
+        "appVersion": ">=1.9.95"
+    },
+    "logoUrl": "/plugins/playlet_scrape/logo.jpg",
+    "githubUrl": "https://github.com/htnanako/MovieBot_plugins",
+    "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/playlet_scrape",
+    "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg",
+    "configField": [
+        {
+            "fieldName": "access_token",
+            "fieldType": "String",
+            "label": "短剧刮削数据库认证key。",
+            "defaultValue": ""
+        },
+        {
+            "fieldName": "watch_folder",
+            "fieldType": "String",
+            "label": "监控路径",
+            "helperText": "监控路径,英文逗号分隔. 在每个监控路径后用英文冒号(:)附加一个该路径对应的目标路径",
+            "defaultValue": ""
+        },
+        {
+            "fieldName": "target_folder",
+            "fieldType": "String",
+            "label": "默认的整理路径。",
+            "helperText": "默认的整理路径，用于手动执行刮削时的默认目标路径",
+            "defaultValue": ""
+        },
+        {
+            "fieldName": "episode_nfo_switch",
+            "fieldType": "Bool",
+            "label": "是否生成单集信息文件。",
+            "helperText": "是否生成单集的nfo文件，不开启则不生成。",
+            "defaultValue": true
+        }
+    ]
+}
