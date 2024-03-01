@@ -1,8 +1,4 @@
 import logging
-import os
-import re
-import time
-import httpx
 
 from mbot.core.params import ArgSchema, ArgType
 from mbot.core.plugins import (
@@ -11,9 +7,7 @@ from mbot.core.plugins import (
     PluginCommandResponse,
 )
 
-from . import config
-from .files import FilesLink
-from .event import register
+from .event import register, manual
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +38,18 @@ def pls_register(ctx: PluginCommandContext,
         return PluginCommandResponse(False, "注册失败")
 
 
+task_mode_enum = [
+    {
+        "name": "刮削存量短剧",
+        "value": "scrape_all"
+    },
+    {
+        "name": "刮削单部短剧",
+        "value": "scrape_single"
+    }
+]
+
+
 @plugin.command(
     name="pls_manual",
     title="PLS手动刮削存量短剧",
@@ -52,24 +58,17 @@ def pls_register(ctx: PluginCommandContext,
     run_in_background=True,
 )
 def pls_manual(ctx: PluginCommandContext,
-               source_path: ArgSchema(ArgType.String, "下载目录", "")) -> PluginCommandResponse:
+               source_path: ArgSchema(ArgType.String, "文件目录", "手动输入待刮削的目录"),
+               task_mode: ArgSchema(ArgType.Enum, '任务类型', '选择任务类型', enum_values=lambda: task_mode_enum, multi_value=False)) -> PluginCommandResponse:
     """
     指定下载目录, 手动刮削存量
     :param ctx:  插件上下文
     :param source_path:  下载目录
+    :param task_mode:  任务类型
     :return:
     """
-    # 获取该目录下所有一级文件夹
-    dirs = os.listdir(source_path)
     try:
-        for dir in dirs:
-            # 判断是否为文件夹
-            if os.path.isdir(os.path.join(source_path, dir)):
-                # 开始刮削
-                fl = FilesLink()
-                fl.main(os.path.join(source_path, dir))
-                time.sleep(10)
-        logger.info(f"[PLS事件] 刮削任务完成")
+        manual(source_path, task_mode)
         return PluginCommandResponse(True, "刮削完成")
     except Exception as e:
         logger.error(f"刮削失败: {e}", exc_info=True)
