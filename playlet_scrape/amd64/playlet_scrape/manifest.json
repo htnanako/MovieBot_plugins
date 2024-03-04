@@ -3,7 +3,7 @@
     "title": "短剧刮削",
     "author": "NaNaKo",
     "description": "短剧刮削插件。请仔细查看Github的README后再使用。仅支持amd64设备使用。",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "requirements": [],
     "dependencies": {
         "appVersion": ">=1.9.95"
@@ -11,7 +11,7 @@
     "logoUrl": "/plugins/playlet_scrape/logo.jpg",
     "githubUrl": "https://github.com/htnanako/MovieBot_plugins",
     "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/playlet_scrape",
-    "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg",
+    "payImageUrl": "https://ossapi.ainnk.vip/public/images/MovieBot_Plugins/donate/nanako_qrcode.jpg",
     "configField": [
         {
             "fieldName": "access_token",
