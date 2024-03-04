@@ -2,13 +2,35 @@ import httpx
 import datetime
 
 from cacheout import Cache
+from typing import Dict, Any
 
+from moviebotapi.common import MenuItem
 from mbot.core.plugins import PluginMeta, plugin, PluginCommandContext, PluginCommandResponse
 from mbot.core.params import ArgSchema, ArgType
 
 from .config import *
 
 time_cache = Cache(maxsize=100)
+
+
+@plugin.after_setup
+def after_setup(plugin_meta: PluginMeta, config: Dict[str, Any]):
+    href = log_page_url
+    server.auth.add_permission([1], href)
+    menus = server.common.list_menus()
+    menus_list = []
+    for menu in menus:
+        if menu.title == "设置":
+            for x in menu.pages:
+                menus_list.append(x.title)
+            if "系统日志" not in menus_list:
+                menu_item = MenuItem()
+                menu_item.title = "系统日志"
+                menu_item.href = href
+                menu_item.icon = "Article"
+                menu.pages.insert(0, menu_item)
+                break
+    server.common.save_menus(menus)
 
 
 @plugin.command(name='restart', title='重启程序', desc='点击重启主程序', icon='AutoAwesome',
