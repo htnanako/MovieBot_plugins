@@ -9,28 +9,29 @@ from mbot.core.plugins import PluginMeta, plugin, PluginCommandContext, PluginCo
 from mbot.core.params import ArgSchema, ArgType
 
 from .config import *
+from .install_modules import InstallModule
 
 time_cache = Cache(maxsize=100)
 
 
 @plugin.after_setup
 def after_setup(plugin_meta: PluginMeta, config: Dict[str, Any]):
-    href = log_page_url
-    server.auth.add_permission([1], href)
-    menus = server.common.list_menus()
-    menus_list = []
-    for menu in menus:
-        if menu.title == "设置":
-            for x in menu.pages:
-                menus_list.append(x.title)
-            if "系统日志" not in menus_list:
-                menu_item = MenuItem()
-                menu_item.title = "系统日志"
-                menu_item.href = href
-                menu_item.icon = "Article"
-                menu.pages.insert(0, menu_item)
-                break
-    server.common.save_menus(menus)
+    # global log_menu_entry, user_search_site_permission, pre_installed_modules
+
+    log_menu_entry = config.get('log_menu_entry', True)
+    user_search_site_permission = config.get('user_search_site_permission', False)
+    pre_installed_modules = config.get('pre_installed_modules')
+
+    if log_menu_entry:
+        add_menu()
+
+    if user_search_site_permission:
+        add_permission()
+
+    if pre_installed_modules:
+        modules = pre_installed_modules.split(',')
+        logger.info(f"「奈奈子的工具箱」: 设定的预安装模块：{modules}")
+        InstallModule().main(modules)
 
 
 @plugin.command(name='restart', title='重启程序', desc='点击重启主程序', icon='AutoAwesome',
@@ -51,11 +52,11 @@ def clear_notify_command(ctx: PluginCommandContext):
                 run_in_background=True)
 def install_module_command(
         ctx: PluginCommandContext,
-        module_name: ArgSchema(ArgType.String, '模块名称', '准确输入要安装的模块名称。安装完成后请重启程序。',
-                               required=True)):
-    from .install_modules import InstallModule
-    InstallModule(module_name=module_name).start()
-    return PluginCommandResponse(True, f'正在安装「{module_name}」模块，如日志无报错，稍后自行重启容器生效。')
+        modules: ArgSchema(ArgType.String, '模块名称', '准确输入要安装的模块名称。安装完成后请重启程序。',
+                           required=True)):
+    module_name = modules.split(',')
+    InstallModule().main(module_name)
+    return PluginCommandResponse(True, f'模块「{modules}」安装完成！')
 
 
 @plugin.command(name='calc_start_time', title='MovieBot启动时间', desc='查看MovieBot启动时间', icon='AutoAwesome',
@@ -64,6 +65,30 @@ def calc_start_time_command(
         ctx: PluginCommandContext):
     extra = calc_start_time()
     return PluginCommandResponse(True, f"MovieBot已运行了「{extra}」")
+
+
+def add_menu():
+    href = log_page_url
+    server.auth.add_permission([1], href)
+    menus = server.common.list_menus()
+    menus_list = []
+    for menu in menus:
+        if menu.title == "设置":
+            for x in menu.pages:
+                menus_list.append(x.title)
+            if "系统日志" not in menus_list:
+                menu_item = MenuItem()
+                menu_item.title = "系统日志"
+                menu_item.href = href
+                menu_item.icon = "Article"
+                menu.pages.insert(0, menu_item)
+                break
+    server.common.save_menus(menus)
+
+
+def add_permission():
+    href = search_site_uri
+    server.auth.add_permission([2], href)
 
 
 def restart_app():

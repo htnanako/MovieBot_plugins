@@ -3,9 +3,38 @@
   "title": "奈奈子的工具箱",
   "author": "NaNaKo_",
   "description": "奈奈子的工具箱。具体信息查看Github Readme。",
-  "version": "0.6",
+  "version": "0.7",
   "requirements": [],
-  "configField": [],
+  "configField": [
+    {
+      "fieldName": "help_doc",
+      "fieldType": "Bool",
+      "label": "所有设置修改后，必须重启程序才能生效。(此项勾选无作用，仅为说明文本。)",
+      "helperText": "",
+      "defaultValue": true
+    },
+    {
+      "fieldName": "pre_installed_modules",
+      "fieldType": "String",
+      "label": "预安装模块",
+      "helperText": "输入需要预安装的模块，多个模块用英文逗号(,)分隔。",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "log_menu_entry",
+      "fieldType": "Bool",
+      "label": "添加日志入口到左侧菜单。",
+      "helperText": "",
+      "defaultValue": true
+    },
+    {
+      "fieldName": "user_search_site_permission",
+      "fieldType": "Bool",
+      "label": "普通用户添加搜索站点权限。",
+      "helperText": "",
+      "defaultValue": false
+    }
+  ],
   "githubUrl": "",
   "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/NaNaKo_ToolBox",
   "logoUrl": "/plugins/NaNaKo_ToolBox/logo.png",
