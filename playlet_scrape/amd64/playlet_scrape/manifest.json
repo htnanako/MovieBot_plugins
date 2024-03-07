@@ -3,7 +3,7 @@
     "title": "短剧刮削",
     "author": "NaNaKo",
     "description": "短剧刮削插件。请仔细查看Github的README后再使用。仅支持amd64设备使用。",
-    "version": "0.0.7",
+    "version": "0.1",
     "requirements": [],
     "dependencies": {
         "appVersion": ">=1.9.95"
