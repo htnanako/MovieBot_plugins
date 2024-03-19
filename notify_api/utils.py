@@ -8,9 +8,6 @@ from .config import *
 class Config:
     def __init__(self):
         self.config_path = notify_api_file_path
-        # if not os.path.exists(self.config_path):
-        #     with open(self.config_path, "w") as nf:
-        #         nf.write("[]")
 
     def get_config(self):
         with open(self.config_path, "r") as nf:
