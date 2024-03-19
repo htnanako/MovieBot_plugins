@@ -1,0 +1,16 @@
+{
+    "name": "notify_api",
+    "title": "通知调度中心",
+    "author": "NaNaKo",
+    "description": "外部调用MovieBot通知通道，支持GET、POST请求。具体配置查看Github页面。",
+    "version": "0.0.1",
+    "requirements": [],
+    "dependencies": {
+        "appVersion": ">=1.9.95"
+    },
+    "logoUrl": "/plugins/notify_api/logo.png",
+    "githubUrl": "https://github.com/htnanako/MovieBot_plugins",
+    "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/notify_api",
+    "payImageUrl": "https://ossapi.ainnk.vip/public/images/MovieBot_Plugins/donate/nanako_qrcode.jpg",
+    "configField": []
+}
