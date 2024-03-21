@@ -3,7 +3,7 @@
     "title": "通知调度中心",
     "author": "NaNaKo",
     "description": "外部调用MovieBot通知通道，支持GET、POST请求。具体配置查看Github页面。",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "requirements": [],
     "dependencies": {
         "appVersion": ">=1.9.95"

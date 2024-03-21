@@ -126,16 +126,6 @@ function App() {
                   relodNotifyapis();
                 }}
               />
-              <DeleteButton
-                onDelete={async () => {
-                  await deleteNotifyapi(notifyapi.id!);
-                  relodNotifyapis();
-                }}
-              >
-                <div className="btn btn-sm btn-circle" title="删除">
-                  <Icon icon="material-symbols:delete" className="w-5 h-5" />
-                </div>
-              </DeleteButton>
               <div
                 className="btn btn-sm btn-circle"
                 title="复制接口信息，仅在https访问时可用。"
@@ -153,6 +143,16 @@ function App() {
               >
                 <Icon icon="material-symbols:content-copy" className="w-5 h-5" />
               </div>
+              <DeleteButton
+                onDelete={async () => {
+                  await deleteNotifyapi(notifyapi.id!);
+                  relodNotifyapis();
+                }}
+              >
+                <div className="btn btn-sm btn-circle" title="删除">
+                  <Icon icon="material-symbols:delete" className="w-5 h-5" />
+                </div>
+              </DeleteButton>
             </div>
           </div>
         );

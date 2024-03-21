@@ -97,12 +97,20 @@ def send_notify():
             pic_url = request.args.get("pic_url", None)
             link_url = request.args.get("link_url", None)
         else:
-            data = request.json
-            title = data.get("title")
-            content = data.get("content")
-            id = data.get("id")
-            pic_url = data.get("pic_url", None)
-            link_url = data.get("link_url", None)
+            if request.headers.get('Content-Type', "application/json") == "application/json":
+                data = request.json
+                title = data.get("title")
+                content = data.get("content")
+                id = data.get("id")
+                pic_url = data.get("pic_url", None)
+                link_url = data.get("link_url", None)
+            else:
+                form = request.form
+                title = form.get("title")
+                content = form.get("content")
+                id = form.get("id")
+                pic_url = form.get("pic_url", None)
+                link_url = form.get("link_url", None)
         if not title:
             return json_500(message="Miss Title")
         if not content:
