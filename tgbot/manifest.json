@@ -3,7 +3,7 @@
   "title": "Telegram机器人",
   "author": "WWWW NaNaKo_",
   "description": "通过TG_Bot交互机器人搜索订阅",
-  "version": "0.5",
+  "version": "0.5.1",
   "requirements": [],
   "configField": [
     {
@@ -37,6 +37,6 @@
   ],
   "githubUrl": "https://github.com/htnanako/MovieBot_plugins",
   "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/tgbot",
-  "logoUrl": "/plugins/tgbot/logo.png",
+  "logoUrl": "/plugins/tgbot/logo.jpg",
   "payImageUrl": "https://ossapi.ainnk.vip/public/images/MovieBot_Plugins/donate/nanako_qrcode.jpg"
 }
