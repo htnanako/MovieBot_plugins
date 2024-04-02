@@ -267,8 +267,7 @@ class TGBOT:
         loop = asyncio.new_event_loop()
         try:
             asyncio.set_event_loop(loop)
-            app = Application.builder().token(self.bot_token).base_url(self.base_url).proxy_url(
-                self.proxy).get_updates_proxy_url(self.proxy).build()
+            app = Application.builder().token(self.bot_token).base_url(self.base_url).proxy(self.proxy).get_updates_proxy(self.proxy).build()
             app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, self.echo))
             app.add_handler(CallbackQueryHandler(self.button, pattern="^\d"))
             app.add_handler(CallbackQueryHandler(self.back, pattern="^back"))
@@ -276,6 +275,7 @@ class TGBOT:
             app.add_handler(CallbackQueryHandler(self.sub_by_douban, pattern="^sub"))
             app.run_polling(stop_signals=None, close_loop=False)
         except Exception as e:
+            _LOGGER.error(f"Telegram机器人启动失败：{e}", exc_info=True)
             return
         finally:
             loop.close()

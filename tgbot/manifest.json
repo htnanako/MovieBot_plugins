@@ -35,8 +35,8 @@
       "defaultValue": ""
     }
   ],
-  "logoUrl": "/plugins/tgbot/logo.jpg",
-  "githubUrl": "https://github.com/WWWWM03/MovieBotPlugins/tree/main/tgbot",
-  "helpDocUrl": "https://github.com/WWWWM03/MovieBotPlugins/tree/main/tgbot",
-  "dependencies": null
+  "githubUrl": "https://github.com/htnanako/MovieBot_plugins",
+  "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/tgbot",
+  "logoUrl": "/plugins/tgbot/logo.png",
+  "payImageUrl": "https://ossapi.ainnk.vip/public/images/MovieBot_Plugins/donate/nanako_qrcode.jpg"
 }
