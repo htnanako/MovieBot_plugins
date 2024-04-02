@@ -3,7 +3,7 @@
   "title": "奈奈子的工具箱",
   "author": "NaNaKo_",
   "description": "奈奈子的工具箱。具体信息查看Github Readme。",
-  "version": "0.7",
+  "version": "0.8",
   "requirements": [],
   "configField": [
     {
@@ -17,7 +17,7 @@
       "fieldName": "pre_installed_modules",
       "fieldType": "String",
       "label": "预安装模块",
-      "helperText": "输入需要预安装的模块，多个模块用英文逗号(,)分隔。",
+      "helperText": "输入需要预安装的模块，多个模块用英文逗号(,)分隔。支持指定版本号，在模块名后面使用=指定版本号。",
       "defaultValue": ""
     },
     {
