@@ -1,0 +1,87 @@
+{
+  "name": "emby_notify",
+  "title": "Emby事件通知",
+  "author": "多吃点",
+  "description": "Emby事件通知。支持播放、停止、入库事件。",
+  "version": "1.9",
+  "dependencies": {
+    "appVersion": ">=1.9.2",
+    "mediaServer": "emby"
+  },
+  "requirements": [],
+  "configField": [
+    {
+      "fieldName": "uid",
+      "fieldType": "Enum",
+      "label": "推送用户",
+      "helperText": "选择接收推送的用户,用户管理要独立设置推送配置才生效",
+      "enumValuesRef": "UserList",
+      "multiValue": true
+    },{
+      "fieldName": "mbot_server_url",
+      "fieldType": "String",
+      "label": "MBot内网地址",
+      "helperText": "访问MovieBot的内网访问地址，能让Emby访问到的内网IP，示范：http://192.168.1.80:1329",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "default_start_title",
+      "fieldType": "String",
+      "label": "播放开始标题",
+      "helperText": "播放开始时通知标题，和推送模版语法一致",
+      "defaultValue": "{{user}}开始播放 {{title}}{%if year%}({{year}}){%endif%}"
+    },
+    {
+      "fieldName": "default_start_body",
+      "fieldType": "String",
+      "label": "播放开始内容",
+      "helperText": "播放开始时通知内容，和推送模版语法一致",
+      "defaultValue": "{%if progress_text%}{{progress_text}}\n{%endif%}{{container}} · {{video_stream_title}}\n⤷{{transcoding_info}} {{bitrate}}Mbps{%if current_cpu%}\n⤷CPU消耗：{{current_cpu}}%{%endif%}\n来自：{{server_name}}\n大小：{{size}}\n设备：{{client}} · {{device_name}}{%if genres%}\n风格：{{genres}}{%endif%}{%if intro%}\n简介：{{intro}}{%endif%}"
+    },
+    {
+      "fieldName": "default_stop_title",
+      "fieldType": "String",
+      "label": "播放停止标题",
+      "helperText": "播放停止时通知标题，和推送模版语法一致",
+      "defaultValue": "{{user}}停止播放 {{title}}{%if year%}({{year}}){%endif%}"
+    },
+    {
+      "fieldName": "default_stop_body",
+      "fieldType": "String",
+      "label": "播放停止内容",
+      "helperText": "播放停止时通知内容，和推送模版语法一致",
+      "defaultValue": "{%if progress_text%}{{progress_text}}\n{%endif%}{{container}} · {{video_stream_title}}\n⤷{{transcoding_info}} {{bitrate}}Mbps{%if current_cpu%}\n⤷CPU消耗：{{current_cpu}}%{%endif%}\n来自：{{server_name}}\n大小：{{size}}\n设备：{{client}} · {{device_name}}{%if genres%}\n风格：{{genres}}{%endif%}{%if intro%}\n简介：{{intro}}{%endif%}"
+    },
+    {
+      "fieldName": "default_new_movie_title",
+      "fieldType": "String",
+      "label": "电影入库标题",
+      "helperText": "电影入库时通知标题，和推送模版语法一致",
+      "defaultValue": "🍟 新片入库： {{title}} {%if release_year%}({{release_year}}){%endif%}"
+    },
+    {
+      "fieldName": "default_new_movie_body",
+      "fieldType": "String",
+      "label": "电影入库内容",
+      "helperText": "电影入库时通知内容，和推送模版语法一致",
+      "defaultValue": "🍟 {{server_name}}\n入库时间: {{created_at}}{%if genres%}\n\n风格：{{genres}}{%endif%}\n大小：{{size}}{%if intro%}\n简介：{{intro}}{%endif%}"
+    },
+    {
+      "fieldName": "default_new_series_title",
+      "fieldType": "String",
+      "label": "剧集入库标题",
+      "helperText": "剧集入库时通知标题，和推送模版语法一致",
+      "defaultValue": "📺 新片入库： {{title}}"
+    },
+    {
+      "fieldName": "default_new_series_body",
+      "fieldType": "String",
+      "label": "剧集入库内容",
+      "helperText": "剧集入库时通知内容，和推送模版语法一致",
+      "defaultValue": "📺 {{server_name}}\n入库时间: {{created_at}}\n{%if episode_title%}\n单集标题：{{episode_title}}{%endif%}{%if series_genres%}\n风格：{{series_genres}}{%endif%}\n大小：{{size}}{%if intro%}\n简介：{{intro}}{%endif%}"
+    }
+  ],
+  "logoUrl": "/plugins/emby_notify/logo.jpg",
+  "githubUrl": null,
+  "helpDocUrl": null
+}
