@@ -3,7 +3,7 @@
   "title": "企业微信ChatBot",
   "author": "NaNaKo_",
   "description": "通过企业微信与ChatGPT聊天",
-  "version": "1.0",
+  "version": "1.0.1",
   "requirements": [],
   "configField": [
     {
@@ -43,7 +43,7 @@
         "gpt-3.5-turbo": "gpt-3.5-turbo",
         "gpt-4-0125-preview": "gpt-4-0125-preview",
         "gpt-4-turbo-preview": "gpt-4-turbo-preview",
-        "gpt-4o-turbo": "gpt-4o-turbo",
+        "gpt-4o": "gpt-4o",
         "自定义模型，选择此项时下一选项才生效": "customizable"
       },
       "multiValue": false
