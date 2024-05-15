@@ -1,21 +1,25 @@
 import httpx
 import re
 import logging
+import time
+import json
+
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 
-from .utils import save_img
+from . import config
+from .utils import save_img, UserRecords
 
 logger = logging.getLogger(__name__)
 
 ERROR_CODE = {
-    400: '[ERROR: 400] 提示触发 Azure OpenAI 的内容管理策略，响应被过滤 | The response was filtered due to the prompt triggering Azure OpenAI’s content management policy',
+    400: '[ERROR: 400] 后端服务出错，请查看日志。 | Backend service error, please check the log',
     401: '[ERROR: 401] 提供错误的API密钥 | Incorrect API key provided',
     403: '[ERROR: 403] 服务器拒绝访问，请稍后再试 | Server refused to access, please try again later',
     429: '[ERROR: 429] 额度不足 | Quota exhausted',
     502: '[ERROR: 502] 错误的网关 |  Bad Gateway',
     503: '[ERROR: 503] 服务器繁忙，请稍后再试 | Server is busy, please try again later',
     504: '[ERROR: 504] 网关超时 | Gateway Time-out',
-    500: '[ERROR: 500] 服务器繁忙，请稍后再试 | Internal Server Error',
+    500: '[ERROR: 500] 服务器内部错误，请稍后再试 | Internal Server Error',
 }
 
 
@@ -24,30 +28,34 @@ def unknown_error_code(error_code):
 
 
 @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(3))
-async def chat(SERVICE, base_url, proxy, api_key, model, query, session_id=None, session_limit=None):
+async def chat(query, username):
     query = query.strip()
-    json = {
-        "model": model,
+    payload = {
+        "model": config.model,
         "messages": [
             {
                 "role": "user",
                 "content": query
             }
         ],
-        "max_tokens": 2048,
+        "max_tokens": 2000,
     }
-    if 'aiproxy' in SERVICE:
-        if session_limit != '' and session_limit != '0':
-            json["session_id"] = session_id
-            json["session_limit"] = session_limit
+    if config.custom_prompt:
+        payload["messages"].insert(0, {
+            "role": "system",
+            "content": config.custom_prompt.format(date=time.strftime("%Y-%m-%d", time.localtime()))
+        })
+    if config.context_num:
+        for index, record in enumerate(UserRecords().get_records(username=username)):
+            payload["messages"].insert(index + 1, record)
     try:
-        r = httpx.post(url=f"{base_url}/v1/chat/completions",
+        r = httpx.post(url=f"{config.base_url}/v1/chat/completions",
                        headers={
                            "Content-Type": "application/json",
-                           "Authorization": f"Bearer {api_key}"
+                           "Authorization": f"Bearer {config.api_key}"
                        },
-                       json=json,
-                       proxies=proxy,
+                       json=payload,
+                       proxies=config.proxies,
                        timeout=180)
         j = r.json()
         if r.status_code == 200:
@@ -61,6 +69,17 @@ async def chat(SERVICE, base_url, proxy, api_key, model, query, session_id=None,
                 return f'<a href="{url}">{title}</a>'
 
             answer = re.sub(pattern, replace_link, answer)
+            if config.context_num:
+                assistant_content = {
+                    "role": "assistant",
+                    "content": answer
+                }
+                user_content = {
+                    "role": "user",
+                    "content": query
+                }
+                UserRecords().add_record(username=username, record=user_content)
+                UserRecords().add_record(username=username, record=assistant_content)
             return answer
         else:
             logger.error(f"「ChatBot」Chat Error: {j}", exc_info=True)
@@ -71,11 +90,11 @@ async def chat(SERVICE, base_url, proxy, api_key, model, query, session_id=None,
 
 
 @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(3))
-async def draw(base_url, proxy, api_key, prompt, draw_info):
+async def draw(prompt, draw_info):
     prompt = prompt.strip()
     size = draw_info.split('_')[0]
     quality = draw_info.split('_')[1]
-    json = {
+    payload = {
         "model": "dall-e-3",
         "prompt": prompt,
         "n": 1,
@@ -83,13 +102,13 @@ async def draw(base_url, proxy, api_key, prompt, draw_info):
         "quality": quality
     }
     try:
-        r = httpx.post(url=f"{base_url}/v1/images/generations",
+        r = httpx.post(url=f"{config.base_url}/v1/images/generations",
                        headers={
                            "Content-Type": "application/json",
-                           "Authorization": f"Bearer {api_key}"
+                           "Authorization": f"Bearer {config.api_key}"
                        },
-                       json=json,
-                       proxies=proxy,
+                       json=payload,
+                       proxies=config.proxies,
                        timeout=300)
         j = r.json()
         if r.status_code == 200:

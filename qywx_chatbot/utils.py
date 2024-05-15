@@ -2,7 +2,12 @@ import os
 import httpx
 import datetime
 import logging
+import json
+
+from collections import deque
 from tenacity import retry, wait_random_exponential, stop_after_attempt
+
+from . import config
 
 logger = logging.getLogger(__name__)
 
@@ -64,3 +69,37 @@ async def save_img(img_url, img_prompt):
     except Exception as e:
         logger.error(f"「ChatBot」Save Image Error: {e}", exc_info=True)
         return False
+
+
+class UserRecords:
+    def __init__(self, filename='/data/conf/context.json'):
+        self.records = {}
+        self.max_records = int(config.context_num)
+        self.filename = filename
+        if not os.path.exists(self.filename):
+            open(self.filename, 'w').close()
+        self.load_records()
+
+    def add_record(self, username, record):
+        if username not in self.records:
+            self.records[username] = deque(maxlen=self.max_records)
+        self.records[username].append(record)
+        self.save_records()
+
+    def get_records(self, username):
+        return list(self.records.get(username, []))
+
+    def save_records(self):
+        records_to_save = {user: list(records) for user, records in self.records.items()}
+        with open(self.filename, 'w') as file:
+            file.write(json.dumps(records_to_save, ensure_ascii=False, indent=4))
+
+    def load_records(self):
+        try:
+            with open(self.filename, 'r') as file:
+                file_content = file.read().strip()
+                if file_content:
+                    records_from_file = json.loads(file_content)
+                    self.records = {user: deque(records, maxlen=self.max_records) for user, records in records_from_file.items()}
+        except FileNotFoundError:
+            pass

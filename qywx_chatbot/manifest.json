@@ -3,19 +3,15 @@
   "title": "企业微信ChatBot",
   "author": "NaNaKo_",
   "description": "通过企业微信与ChatGPT聊天",
-  "version": "0.9.9",
+  "version": "1.0",
   "requirements": [],
   "configField": [
     {
-      "fieldName": "SERVICE",
-      "fieldType": "Enum",
-      "label": "GPT接口",
-      "helperText": "选择GPT接口",
-      "enumValues": {
-        "OpenAI": "openai",
-        "AiProxy": "aiproxy"
-      },
-      "multiValue": false
+      "fieldName": "base_url",
+      "fieldType": "String",
+      "label": "自定义接口地址",
+      "helperText": "ChatGPT官方地址https://api.openai.com",
+      "defaultValue": "https://api.openai.com"
     },
     {
       "fieldName": "proxy",
@@ -25,43 +21,46 @@
       "defaultValue": ""
     },
     {
-      "fieldName": "self_url",
-      "fieldType": "String",
-      "label": "自定义接口地址",
-      "helperText": "自定义接口地址，如果不懂什么意思不要填写。",
-      "defaultValue": ""
-    },
-    {
       "fieldName": "api_key",
       "fieldType": "String",
       "label": "API_KEY",
-      "helperText": "GPT接口提供商给的API_KEY",
+      "helperText": "接口提供商给的API_KEY",
       "defaultValue": ""
     },
     {
-      "fieldName": "session_limit",
+      "fieldName": "context_num",
       "fieldType": "String",
       "label": "上下文数量",
-      "helperText": "上下文数量，仅当选择AiProxy时生效，建议1-5之间为佳",
-      "defaultValue": "5"
+      "helperText": "每次请求时记录的上下文数量，建议在5以内。请注意tokens消耗。",
+      "defaultValue": "0"
     },
     {
       "fieldName": "model",
       "fieldType": "Enum",
       "label": "模型",
-      "helperText": "选择对话模型，Claude模型仅支持AIProxy。",
+      "helperText": "选择对话模型。",
       "enumValues": {
         "gpt-3.5-turbo": "gpt-3.5-turbo",
-        "gpt-3.5-turbo-0613": "gpt-3.5-turbo-0613",
-        "gpt-3.5-turbo-1106": "gpt-3.5-turbo-1106",
-        "gpt-4": "gpt-4",
-        "gpt-4-0613": "gpt-4-0613",
-        "gpt-4-1106-preview": "gpt-4-1106-preview",
         "gpt-4-0125-preview": "gpt-4-0125-preview",
-        "claude-instant-1(对标GPT-3.5)": "claude-instant-1",
-        "claude-2(对标GPT-4)": "claude-2"
+        "gpt-4-turbo-preview": "gpt-4-turbo-preview",
+        "gpt-4o-turbo": "gpt-4o-turbo",
+        "自定义模型，选择此项时下一选项才生效": "customizable"
       },
       "multiValue": false
+    },
+    {
+      "fieldName": "custom_model",
+      "fieldType": "String",
+      "label": "自定义模型",
+      "helperText": "自定义模型，上一选项选择自定义模型时才生效",
+      "defaultValue": ""
+    },
+    {
+      "fieldName": "custom_prompt",
+      "fieldType": "String",
+      "label": "自定义prompt",
+      "helperText": "自定义prompt，如果填写了，每一次请求都会带上，请注意tokens消耗。使用{date}可以添加当前日期。",
+      "defaultValue": ""
     },
     {
       "fieldName": "draw_info",
@@ -124,5 +123,5 @@
   "githubUrl": "https://github.com/htnanako/MovieBot_plugins",
   "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/qywx_chatbot",
   "logoUrl": "/plugins/qywx_chatbot/logo.jpg",
-  "payImageUrl": "https://p.xmoviebot.com/donate/chacha_wechat.jpg"
+  "payImageUrl": "https://ossapi.ainnk.vip/public/images/MovieBot_Plugins/donate/nanako_qrcode.jpg"
 }
