@@ -89,6 +89,11 @@ class UserRecords:
     def get_records(self, username):
         return list(self.records.get(username, []))
 
+    def clear_records(self, username):
+        if username in self.records:
+            del self.records[username]
+            self.save_records()
+
     def save_records(self):
         records_to_save = {user: list(records) for user, records in self.records.items()}
         with open(self.filename, 'w') as file:

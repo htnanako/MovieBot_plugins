@@ -14,6 +14,7 @@ from typing import Dict, Any
 from . import config
 from .chatapi import chat, draw
 from .qywx_Crypt.WXBizMsgCrypt import WXBizMsgCrypt
+from .utils import UserRecords
 
 from mbot.core.plugins import PluginMeta
 from mbot.core.plugins import plugin, PluginCommandContext, PluginCommandResponse
@@ -206,6 +207,11 @@ def recv():
         create_time = decrypt_data.get('CreateTime')
         msg_type = decrypt_data.get('MsgType')
         msg_id = decrypt_data.get('MsgId')
+        if any(content.startswith(prefix) for prefix in config.clear_context_command):
+            UserRecords().clear_records(fromuser)
+            reply = f"<xml><ToUserName>{touser}</ToUserName><FromUserName>{fromuser}</FromUserName><CreateTime>{create_time}</CreateTime><MsgType>{msg_type}</MsgType><Content>清理上下文完成</Content><MsgId>{msg_id}</MsgId><AgentID>{config.sAgentid}</AgentID></xml>"
+            ret, send_Msg = wxcpt.EncryptMsg(reply, nonce, timestamp)
+            return send_Msg, 200
         if content.startswith("画"):
             logger.info(f"「ChatBot」Draw: {content.strip()}[dall-e-3]")
             draw_thread = QywxImgMsgThread(content.replace('画', '').strip(), fromuser, config.sAgentid)

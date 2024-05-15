@@ -40,14 +40,16 @@ async def chat(query, username):
         ],
         "max_tokens": 2000,
     }
+    start = 0
     if config.custom_prompt:
         payload["messages"].insert(0, {
             "role": "system",
             "content": config.custom_prompt.format(date=time.strftime("%Y-%m-%d", time.localtime()))
         })
+        start = 1
     if config.context_num:
         for index, record in enumerate(UserRecords().get_records(username=username)):
-            payload["messages"].insert(index + 1, record)
+            payload["messages"].insert(index + start, record)
     try:
         r = httpx.post(url=f"{config.base_url}/v1/chat/completions",
                        headers={

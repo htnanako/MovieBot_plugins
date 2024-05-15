@@ -24,6 +24,8 @@ sAgentid = ""
 sToken = ""
 sEncodingAESKey = ""
 
+clear_context_command = ["重来", "清除", "结束", "/clear"]
+
 def init_config(web_config: dict[str, str]):
     global base_url, proxies, api_key, context_num, model, custom_model, custom_prompt, draw_info, qywx_base_url, sCorpID, sCorpsecret, sAgentid, sToken, sEncodingAESKey
 
