@@ -1,3 +1,6 @@
+<center><img src="https://raw.githubusercontent.com/htnanako/MovieBot_plugins/main/notify_api/logo.png"  alt=""/></center>
+
+
 ## 通知调度中心
 
 > 基于MovieBot插件系统实现的通知调度中心。
@@ -6,7 +9,7 @@
 
 #### 一、下载本插件
 
-- 下载本插件，将notify_api文件夹到插件目录。
+- 下载本插件，将notify_api文件夹拷贝到插件目录。
 - 前端部分仅需要拷贝/notify_api/frontend/dist -> /plugins/notify_api/frontend/dist
 - 重启MovieBot
 

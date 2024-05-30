@@ -1,3 +1,6 @@
+<center><img src="https://raw.githubusercontent.com/htnanako/MovieBot_plugins/main/aliyunpan_signin/logo.jpg"  alt=""/></center>
+
+
 ## 阿里云盘每日签到
 
 > 基于MovieBot插件系统实现的阿里云盘签到。

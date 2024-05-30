@@ -1,3 +1,6 @@
+<center><img src="https://raw.githubusercontent.com/htnanako/MovieBot_plugins/main/playlet_scrape/amd64/playlet_scrape/logo.jpg"  alt=""/></center>
+
+
 ## 短剧刮削
 
 > 基于MovieBot插件系统实现的短剧刮削工具。

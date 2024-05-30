@@ -1,3 +1,6 @@
+<center><img src="https://raw.githubusercontent.com/htnanako/MovieBot_plugins/main/emby_notify/logo.jpg"  alt=""/></center>
+
+
 ## Emby事件通知
 
 > 基于MovieBot插件系统实现的Emby事件通知插件。
@@ -8,7 +11,7 @@
 
 #### 一、下载本插件
 
-- 下载本插件，将emby_notify文件夹到插件目录。
+- 下载本插件，将emby_notify文件夹拷贝到插件目录。
 - 重启MovieBot
 
 #### 二、配置信息

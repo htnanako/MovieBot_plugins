@@ -1,3 +1,6 @@
+<center><img src="https://raw.githubusercontent.com/htnanako/MovieBot_plugins/main/qywx_chatbot/logo.jpg"  alt=""/></center>
+
+
 ## 企业微信ChatBot插件
 
 > 基于MovieBot插件系统实现的企业微信ChatBot。

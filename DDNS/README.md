@@ -1,3 +1,5 @@
+<center><img src="https://raw.githubusercontent.com/htnanako/MovieBot_plugins/main/DDNS/logo.jpg"  alt=""/></center>
+
 ## DDNS自动更新
 
 > 基于MovieBot插件系统实现的DDNS。

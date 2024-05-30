@@ -1,3 +1,6 @@
+<center><img src="https://raw.githubusercontent.com/htnanako/MovieBot_plugins/main/zhuque_game_fire/logo.jpg"  alt=""/></center>
+
+
 ## 朱雀站点技能批量释放
 
 > 基于MovieBot插件系统实现的朱雀站点技能批量释放。

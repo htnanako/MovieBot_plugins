@@ -1,3 +1,6 @@
+<center><img src="https://raw.githubusercontent.com/htnanako/MovieBot_plugins/main/NaNaKo_ToolBox/logo.png"  alt=""/></center>
+
+
 ## 奈奈子的工具箱
 
 > 基于MovieBot插件系统实现的奈奈子的工具箱。

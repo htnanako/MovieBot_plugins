@@ -1,3 +1,5 @@
+<center><img src="https://raw.githubusercontent.com/htnanako/MovieBot_plugins/main/autofix/logo.png"  alt=""/></center>
+
 ## 识别名修正
 
 > 基于MovieBot插件系统实现的识别名修正插件。
@@ -6,7 +8,7 @@
 
 #### 一、下载本插件
 
-- 下载本插件，将autofix文件夹到插件目录。
+- 下载本插件，将autofix文件夹拷贝到插件目录。
 - 重启MovieBot
 
 #### 二、使用说明
