@@ -8,7 +8,7 @@ import logging
 from cacheout import Cache
 from flask import Blueprint, request, send_file
 from xml.etree.ElementTree import fromstring
-from tenacity import wait_fixed, stop_after_attempt, retry
+from tenacity import wait_random_exponential, stop_after_attempt, retry
 from typing import Dict, Any
 
 from . import config
@@ -49,7 +49,7 @@ class QywxSendMessage:
         self.token_cache = token_cache.get('access_token')
         self.token_expires_time = token_cache.get('expires_time')
 
-    @retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
+    @retry(stop=stop_after_attempt(3), wait=wait_random_exponential(min=10, max=20))
     def get_access_token(self):
         if self.token_expires_time is not None and self.token_expires_time >= datetime.datetime.now():
             return self.token_cache
@@ -67,7 +67,7 @@ class QywxSendMessage:
         else:
             return None
 
-    @retry(stop=stop_after_attempt(3), wait=wait_fixed(5))
+    @retry(stop=stop_after_attempt(3), wait=wait_random_exponential(min=10, max=20))
     def __do_send_message__(self, access_token, data):
         url = f'{self.BASE_URL}/cgi-bin/message/send?access_token={access_token}'
         res = httpx.post(url, data=data, headers={
