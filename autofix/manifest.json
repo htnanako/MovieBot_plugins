@@ -1,0 +1,16 @@
+{
+    "name": "auto_fix",
+    "title": "识别名修正",
+    "author": "NaNaKo",
+    "description": "自动修正识别出错的剧集片名",
+    "version": "0.1",
+    "requirements": [],
+    "dependencies": {
+        "appVersion": ">=1.9.95"
+    },
+    "logoUrl": "/plugins/autofix/logo.png",
+    "githubUrl": "https://github.com/htnanako/MovieBot_plugins",
+    "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/autofix",
+    "payImageUrl": "https://ossapi.ainnk.vip/public/images/MovieBot_Plugins/donate/nanako_qrcode.jpg",
+    "configField": []
+}
