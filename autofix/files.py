@@ -59,8 +59,8 @@ def fix_filename(download_complete_data):
             shutil.move(error_file, real_file)
             logger.info(f"[AutoFix事件] 文件命名修正：{error_file} -> {real_file}")
         else:
-            shutil.rmtree(error_file)
             logger.info(f"[AutoFix事件] 文件{real_file} 已经存在")
+            os.remove(error_file)
     files = get_all_files(target_path)
     if len(files) > 0:
         return

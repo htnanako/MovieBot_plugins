@@ -3,7 +3,7 @@
     "title": "识别名修正",
     "author": "NaNaKo",
     "description": "自动修正识别出错的剧集片名",
-    "version": "0.1",
+    "version": "0.2",
     "requirements": [],
     "dependencies": {
         "appVersion": ">=1.9.95"
