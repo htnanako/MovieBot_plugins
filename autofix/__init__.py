@@ -1,4 +1,5 @@
 from .event import *
+from .command import *
 
 import logging
 

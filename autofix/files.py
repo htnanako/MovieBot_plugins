@@ -26,15 +26,15 @@ def set_tv_folder_format(data):
 
 
 def fix_filename(download_complete_data):
-    title = download_complete_data.get("x_meta").get("title")
-    original_title = download_complete_data.get("x_meta").get("originalTitle")
-    tmdb_name = download_complete_data.get("x_meta").get("tmdb_name")
-    tmdbId = download_complete_data.get("x_meta").get("tmdbId")
+    title = download_complete_data.get("meta").get("title")
+    original_title = download_complete_data.get("meta").get("originalTitle")
+    tmdb_name = download_complete_data.get("meta").get("tmdbName")
+    tmdbId = download_complete_data.get("meta").get("tmdbId")
+    release_year = download_complete_data.get("meta").get("releaseYear")
     target_path = download_complete_data.get("target_path")
     season_number = download_complete_data.get("season_number")
     library_path = download_complete_data.get("library_path")
-    release_year = download_complete_data.get("x_meta").get("releaseYear")
-    season_year = download_complete_data.get("seasonYear")
+    season_year = download_complete_data.get("season_year")
 
     tmpl_data = {
         "name": tmdb_name,
@@ -57,9 +57,9 @@ def fix_filename(download_complete_data):
         real_file = os.path.join(str(real_path), real_name)
         if not os.path.exists(real_file):
             shutil.move(error_file, real_file)
-            logger.info(f"[AutoFix事件] 文件命名修正：{error_file} -> {real_file}")
+            logger.info(f"[AutoFix事件] 文件命名修正: 「{error_file}」 -> 「{real_file}」")
         else:
-            logger.info(f"[AutoFix事件] 文件{real_file} 已经存在")
+            logger.info(f"[AutoFix事件] 文件 「{real_file}」 已经存在")
             os.remove(error_file)
     files = get_all_files(target_path)
     if len(files) > 0:
