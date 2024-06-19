@@ -8,9 +8,9 @@
     "dependencies": {
         "appVersion": ">=1.9.95"
     },
-    "logoUrl": "/plugins/autofix/logo.png",
+    "logoUrl": "/plugins/auto_fix/logo.png",
     "githubUrl": "https://github.com/htnanako/MovieBot_plugins",
-    "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/autofix",
+    "helpDocUrl": "https://github.com/htnanako/MovieBot_plugins/tree/main/auto_fix",
     "payImageUrl": "https://ossapi.ainnk.vip/public/images/MovieBot_Plugins/donate/nanako_qrcode.jpg",
     "configField": []
 }
