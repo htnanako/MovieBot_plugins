@@ -39,7 +39,7 @@
   - 接入Emby事件通知，支持播放开始，播放停止，入库事件
   - 通知格式支持自定义，使用Jinja2语法
   - 本插件在 `多吃点` dalao的插件基础上修改
-- [识别名修正](https://github.com/htnanako/MovieBot_plugins/tree/main/autofix)
+- [识别名修正](https://github.com/htnanako/MovieBot_plugins/tree/main/auto_fix)
   - 自动修正识别出错的剧集片名
 
 #### 主页
@@ -51,4 +51,4 @@
 
 你可以送我一杯咖啡，以表示对这个项目的支持😉
 
-<img src="https://nanako-1253183981.cos.ap-guangzhou.myqcloud.com/public-IMG/bmc_qr.png" width="300" />
+<img src="https://ossapi.ainnk.vip/public/images/MovieBot_Plugins/donate/nanako_qrcode.jpg" width="300" />
