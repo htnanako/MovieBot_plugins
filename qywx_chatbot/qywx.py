@@ -223,7 +223,7 @@ def recv():
             logger.info(f"「ChatBot」Chat: {content}[{config.model}]")
             chat_thread = QywxTextMsgThread(content, fromuser, config.sAgentid, session_id=fromuser)
             chat_thread.start()
-            reply = f"<xml><ToUserName>{touser}</ToUserName><FromUserName>{fromuser}</FromUserName><CreateTime>{create_time}</CreateTime><MsgType>{msg_type}</MsgType><Content>思考中....</Content><MsgId>{msg_id}</MsgId><AgentID>{config.sAgentid}</AgentID></xml>"
+            reply = f"<xml><ToUserName>{touser}</ToUserName><FromUserName>{fromuser}</FromUserName><CreateTime>{create_time}</CreateTime><MsgType>{msg_type}</MsgType><Content>思考中....[{config.model}]</Content><MsgId>{msg_id}</MsgId><AgentID>{config.sAgentid}</AgentID></xml>"
         ret, send_Msg = wxcpt.EncryptMsg(reply, nonce, timestamp)
         return send_Msg, 200
     except Exception as e:

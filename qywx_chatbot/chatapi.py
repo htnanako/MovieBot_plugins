@@ -30,6 +30,11 @@ def unknown_error_code(error_code):
 @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(3))
 async def chat(query, username):
     query = query.strip()
+    model = config.model
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {config.api_key}"
+    }
     payload = {
         "model": config.model,
         "messages": [
@@ -37,13 +42,17 @@ async def chat(query, username):
                 "role": "user",
                 "content": query
             }
-        ],
-        "max_tokens": 2000,
+        ]
     }
+    if model.startswith("o1"):
+        system_role = "user"
+    else:
+        system_role = "system"
+        payload['max_tokens'] = 2000
     start = 0
     if config.custom_prompt:
         payload["messages"].insert(0, {
-            "role": "system",
+            "role": system_role,
             "content": config.custom_prompt.format(date=time.strftime("%Y-%m-%d", time.localtime()))
         })
         start = 1
@@ -52,10 +61,7 @@ async def chat(query, username):
             payload["messages"].insert(index + start, record)
     try:
         r = httpx.post(url=f"{config.base_url}/v1/chat/completions",
-                       headers={
-                           "Content-Type": "application/json",
-                           "Authorization": f"Bearer {config.api_key}"
-                       },
+                       headers=headers,
                        json=payload,
                        proxies=config.proxies,
                        timeout=180)
@@ -129,7 +135,8 @@ async def draw(prompt, draw_info):
             logger.error(f"「ChatBot」Draw Error: {j}", exc_info=True)
             result = {
                 "success": False,
-                "error": j.get("error") if j.get("error") else {ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else unknown_error_code(r.status_code)}
+                "error": j.get("error") if j.get("error") else {
+                    ERROR_CODE[r.status_code] if r.status_code in ERROR_CODE else unknown_error_code(r.status_code)}
             }
             return result
     except Exception as e:
